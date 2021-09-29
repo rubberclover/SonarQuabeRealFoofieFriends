@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { createUser, loginUser, revalidateToken } = require('../controllers/auth.controller');
 const { validateFields } = require('../services/validate-params/auth.validate/validate-fields');
-const { validateJWT } = require('../services/validate-jwt');
+const { validateJWT } = require('../services/validate-params/auth.validate/validate-jwt');
 
 const router = Router();
 
