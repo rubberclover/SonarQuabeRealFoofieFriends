@@ -65,6 +65,17 @@ const suscribeEvent = async(req, res = response) => {
 
 }
 
+const unsuscribeEvent = async(req, res = response) => {
+
+    Event.findOneAndUpdate({_id: req.params.id}, {$pull: {userSuscriber: req.body.userSuscriber}}).then(function(){
+    Event.findOne({_id: req.params.id}).then(function(event){
+        res.send(event)
+    });
+
+});
+
+}
+
 const getAllEvents = async(req, res = response) => {
     
     try{
@@ -108,5 +119,6 @@ module.exports = {
     suscribeEvent,
     getAllEvents,
     obtainEvent,
-    obtainUserEvent
+    obtainUserEvent,
+    unsuscribeEvent
 }
