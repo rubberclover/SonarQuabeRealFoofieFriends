@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const ObjectId = mongoose.Schema.Types.ObjectId;
-const Double = mongoose.Schema.Types.Double;
 
 const EstablishmentSchema = new Schema({
     location: {
@@ -32,10 +31,10 @@ const EstablishmentSchema = new Schema({
     image: [{
         url: String
     }],
-    geoposition: [{
-        latitude: Double,
-        longitude: Double,
-    }],
+    geoposition: {
+        latitude: Number,
+        longitude: Number,
+    },
     user: [{
         type: ObjectId,
         ref: 'User'

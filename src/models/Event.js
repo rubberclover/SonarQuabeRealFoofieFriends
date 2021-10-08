@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const ObjectId = mongoose.Schema.Types.ObjectId;
-const Double = mongoose.Schema.Types.Double;
 
 const EventSchema = new Schema({
     creationDate: {
@@ -24,12 +23,6 @@ const EventSchema = new Schema({
         type: Date,
         required: true
     },
-    user: {
-        type: ObjectId,
-        ref: 'User',
-        required: true
-
-    },
     type: [{
         type: ObjectId,
         ref: 'TagEvent'
@@ -37,10 +30,10 @@ const EventSchema = new Schema({
     image: [{
         url: String
     }],
-    geoposition: [{
-        latitude: Double,
-        longitude: Double,
-    }],
+    geoposition: {
+        latitude: Number,
+        longitude: Number,
+    },
     finishHour: {
         type: String,
         required: true
