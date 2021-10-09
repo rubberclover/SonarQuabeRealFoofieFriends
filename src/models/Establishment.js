@@ -35,7 +35,7 @@ const EstablishmentSchema = new Schema({
         latitude: Number,
         longitude: Number,
     },
-    user: [{
+    owner: [{
         type: ObjectId,
         ref: 'User'
 
