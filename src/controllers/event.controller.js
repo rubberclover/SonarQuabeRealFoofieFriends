@@ -11,7 +11,7 @@ const createEvent = async(req, res = response) => {
     var yyyy = today.getFullYear();
     const todayDate = mm + '/' + dd + '/' + yyyy;
 
-    const { title, description, location, type, image, startHour, finishHour,date,userPublished } = req.body;
+    const { title, description, location, type, image, startDate, finishDate,userPublished } = req.body;
     
     // Create event with model
     const newEvent= new Event({
@@ -20,11 +20,10 @@ const createEvent = async(req, res = response) => {
           title: title,
           description: description,
           location: location,
-          date: date,
           type: type,
           image: image,
-          startHour: startHour,
-          finishHour: finishHour,
+          startDate: startDate,
+          finishDate: finishDate,
           userPublished: userPublished,
           userSuscriber: [],
           geoposition: {
@@ -79,8 +78,19 @@ const unsuscribeEvent = async(req, res = response) => {
 const getAllEvents = async(req, res = response) => {
     
     try{
+        if(req.body.type!=null){
+        var dbEvents = await Event.find({
+            type: { $in: [req.body.type]}});
+        return res.json({
+            dbEvents
+        });
+    }
+        
+        else{
+        var dbEvents = await Event.find();
+        }
         // Read BD
-        const dbEvents = await Event.find();
+        
     
         // Generate JWT
     
@@ -120,5 +130,5 @@ module.exports = {
     getAllEvents,
     obtainEvent,
     obtainUserEvent,
-    unsuscribeEvent
+    unsuscribeEvent,
 }

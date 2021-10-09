@@ -19,10 +19,6 @@ const EventSchema = new Schema({
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        required: true
-    },
     type: [{
         type: ObjectId,
         ref: 'TagEvent'
@@ -34,12 +30,12 @@ const EventSchema = new Schema({
         latitude: Number,
         longitude: Number,
     },
-    finishHour: {
-        type: String,
+    finishDate: {
+        type: Date,
         required: true
     },
-    startHour: {
-        type: String,
+    startDate: {
+        type: Date,
         required: true
     },
     userPublished: {

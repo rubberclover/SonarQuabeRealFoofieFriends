@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { createEvent,suscribeEvent,getAllEvents,obtainEvent, obtainUserEvent,unsuscribeEvent } = require('../controllers/event.controller');
+const { createEvent,suscribeEvent,getAllEvents,obtainEvent, obtainUserEvent,unsuscribeEvent} = require('../controllers/event.controller');
 const { validateFields } = require('../services/validate-params/validate-fields');
 const date = new Date();
 
@@ -26,5 +26,9 @@ router.get('/:id', obtainEvent);
 router.get('/obtainUserEvent/:id', obtainUserEvent);
 
 router.put('/unsuscribe/:id', unsuscribeEvent);
+
+
+
+
 
 module.exports = router;
