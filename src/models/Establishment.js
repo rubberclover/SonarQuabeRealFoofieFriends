@@ -35,11 +35,11 @@ const EstablishmentSchema = new Schema({
         latitude: Number,
         longitude: Number,
     },
-    owner: [{
+    owner: {
         type: ObjectId,
         ref: 'User'
 
-    }]
+    }
 });
 
 module.exports = mongoose.model('Establishment', EstablishmentSchema );
