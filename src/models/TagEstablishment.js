@@ -4,7 +4,16 @@ const { Schema } = mongoose;
 
 const tagEstablishmentSchema = new Schema({
     type: {
-        type: String
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
     }
 });
 
