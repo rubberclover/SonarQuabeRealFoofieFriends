@@ -2,7 +2,6 @@ const { response } = require('express');
 const TagEstablishment = require('../models/TagEstablishment');
 const mongoose = require('mongoose');
 const Establishment = require('../models/Establishment');
-const TagEstablishment = require('../models/TagEstablishment');
 
 
 const createEstablishment = async(req, res = response) => {

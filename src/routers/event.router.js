@@ -10,9 +10,8 @@ router.post( '/new', [
     check('title', 'title is mandatory').not().isEmpty(),
     check('description', 'description is mandatory').not().isEmpty(),
     check('location', 'location is mandatory').not().isEmpty(),
-    check('startHour', 'startHour is mandatory').not().isEmpty(),
-    check('finishHour', 'finishHour is mandatory').not().isEmpty(),
-    check('date', 'date is mandatory').not().isEmpty(),
+    check('startDate', 'startDate is mandatory').not().isEmpty(),
+    check('finishDate', 'finishDate is mandatory').not().isEmpty(),
     validateFields
 ], createEvent );
 

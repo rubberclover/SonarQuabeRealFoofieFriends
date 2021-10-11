@@ -52,13 +52,14 @@ const createEvent = async(req, res = response) => {
 }
 
 const suscribeEvent = async(req, res = response) => {
-        User.findByIdAndUpdate({_id: req.body.userSuscriber},{eventSuscriber:req.params.id});
+        User.findOneAndUpdate({_id: req.body.userSuscriber},{$set: {eventSuscriber:req.params.id}}).then(function(){
         Event.findByIdAndUpdate({_id: req.params.id},req.body).then(function(){
         Event.findOne({_id: req.params.id}).then(function(event){
             res.send(event)
         });
    
     });
+});
 
 }
 
