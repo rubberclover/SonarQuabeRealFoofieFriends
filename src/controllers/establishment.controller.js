@@ -1,10 +1,10 @@
 const { response } = require('express');
 const TagEstablishment = require('../models/TagEstablishment');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const Establishment = require('../models/Establishment');
 
 
-const createEstablishment = async(req, res = response) => {
+/*const createEstablishment = async(req, res = response) => {
 
     const { location, name, timeClose, timeOpen, type, rating, image,geoposition,owner } = req.body;
 
@@ -47,7 +47,7 @@ const createEstablishment = async(req, res = response) => {
         });
     }
 
-}
+}*/
 
 const getAllEstablishments = async(req, res = response) => {
     
@@ -69,21 +69,21 @@ const getAllEstablishments = async(req, res = response) => {
     }
 }
 
-const obtainEstablishment = async(req, res = response) => {
+/*const obtainEstablishment = async(req, res = response) => {
 
     Establishment.findById({_id: req.params.id}).then(function(establishment){
         res.send(establishment);
     });
 
-};
+};*/
 
-const obtainOwnerEstablishment = async(req, res = response) => {
+/*const obtainOwnerEstablishment = async(req, res = response) => {
 
     Establishment.find({owner: req.params.id}).then(function(establishment){
         res.send(establishment);
     });
 
-};
+};*/
 
 const getAllTags = async (req, res = response) => {
     try {
@@ -107,10 +107,10 @@ const getAllTags = async (req, res = response) => {
 }
 
 module.exports = {
-    createEstablishment,
+    //createEstablishment,
     getAllEstablishments,
-    obtainEstablishment,
-    obtainOwnerEstablishment,
+    //obtainEstablishment,
+    //obtainOwnerEstablishment,
     getAllTags
 
 }
