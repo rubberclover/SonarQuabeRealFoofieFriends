@@ -1,11 +1,10 @@
 const { response } = require('express');
 const TagEstablishment = require('../models/TagEstablishment');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const Establishment = require('../models/Establishment');
-const TagEstablishment = require('../models/TagEstablishment');
 
 
-const createEstablishment = async(req, res = response) => {
+/*const createEstablishment = async(req, res = response) => {
 
     const { location, name, timeClose, timeOpen, type, rating, image,geoposition,owner } = req.body;
 
@@ -108,11 +107,11 @@ const getAllTags = async (req, res = response) => {
 }
 
 module.exports = {
-    createEstablishment,
+    //createEstablishment,
   
     getAllEstablishments,
-    obtainEstablishment,
-    obtainOwnerEstablishment,
+    //obtainEstablishment,
+    //obtainOwnerEstablishment,
     getAllTags
 
 }

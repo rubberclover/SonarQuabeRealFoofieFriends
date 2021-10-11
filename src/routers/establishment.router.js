@@ -10,14 +10,14 @@ const router = Router();
     check('timeClose', 'timeClose is mandatory').not().isEmpty(),
     check('timeOpen', 'timeOpen is mandatory').not().isEmpty(),
     validateFields
-], createEstablishment );
+], createEstablishment );*/
 
 
 router.get('/getAllEstablishments', getAllEstablishments);
 
-router.get('/getEstablishment/:id', obtainEstablishment);
+//router.get('/getEstablishment/:id', obtainEstablishment);
 
-router.get('/obtainOwnerEstablishment/:id', obtainOwnerEstablishment);
+//router.get('/obtainOwnerEstablishment/:id', obtainOwnerEstablishment);
 
 router.get('/getAllTags', getAllTags);
 
