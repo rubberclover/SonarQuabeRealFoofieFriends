@@ -2,7 +2,6 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { createEvent,suscribeEvent,getAllEvents,obtainEvent, obtainUserEvent,unsuscribeEvent} = require('../controllers/event.controller');
 const { validateFields } = require('../services/validate-params/validate-fields');
-const date = new Date();
 
 const router = Router();
 

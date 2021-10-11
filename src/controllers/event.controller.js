@@ -1,5 +1,6 @@
 const { response } = require('express');
 const Event = require('../models/Event');
+const User = require('../models/User');
 const mongoose = require('mongoose');
 const Type = mongoose.Types;
 const today= new Date();
@@ -31,9 +32,7 @@ const createEvent = async(req, res = response) => {
              longitude:0
           }
     })
-
     try{
-        
         // Create DB event
         await newEvent.save();
 
@@ -41,8 +40,7 @@ const createEvent = async(req, res = response) => {
         return res.status(201).json({
             ok: true,
         });
-
-     
+ 
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -54,7 +52,7 @@ const createEvent = async(req, res = response) => {
 }
 
 const suscribeEvent = async(req, res = response) => {
-
+        User.findByIdAndUpdate({_id: req.body.userSuscriber},{eventSuscriber:req.params.id});
         Event.findByIdAndUpdate({_id: req.params.id},req.body).then(function(){
         Event.findOne({_id: req.params.id}).then(function(event){
             res.send(event)

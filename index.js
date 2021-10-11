@@ -23,6 +23,8 @@ app.use( express.json() );
 // Routes
 app.use( '/api/auth', require('./src/routers/auth.router') );
 app.use( '/api/event', require('./src/routers/event.router') );
+app.use( '/api/establishment', require('./src/routers/establishment.router') );
+app.use( '/api/rating', require('./src/routers/rating.router') );
 
 
 app.listen( process.env.PORT, () => {
