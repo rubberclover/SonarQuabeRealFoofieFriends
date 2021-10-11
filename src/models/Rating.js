@@ -4,18 +4,18 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const RatingSchema = new Schema({
     confortRating: {
-        type: Int32Array,
+        type: Number,
         required: true
     },
     comment: {
         type: String
     },
     realfoodRating: {
-        type: Int32Array,
+        type: Number,
         required: true
     },
     priceRating: {
-        type: Int32Array,
+        type: Number,
         required: true
     },
     establishment: {

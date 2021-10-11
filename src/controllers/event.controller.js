@@ -1,5 +1,6 @@
 const { response } = require('express');
 const Event = require('../models/Event');
+const User = require('../models/User');
 const mongoose = require('mongoose');
 const Type = mongoose.Types;
 const today= new Date();
@@ -11,7 +12,7 @@ const createEvent = async(req, res = response) => {
     var yyyy = today.getFullYear();
     const todayDate = mm + '/' + dd + '/' + yyyy;
 
-    const { title, description, location, type, image, startHour, finishHour,date,userPublished } = req.body;
+    const { title, description, location, type, image, startDate, finishDate,userPublished } = req.body;
     
     // Create event with model
     const newEvent= new Event({
@@ -20,11 +21,10 @@ const createEvent = async(req, res = response) => {
           title: title,
           description: description,
           location: location,
-          date: date,
           type: type,
           image: image,
-          startHour: startHour,
-          finishHour: finishHour,
+          startDate: startDate,
+          finishDate: finishDate,
           userPublished: userPublished,
           userSuscriber: [],
           geoposition: {
@@ -32,9 +32,7 @@ const createEvent = async(req, res = response) => {
              longitude:0
           }
     })
-
     try{
-        
         // Create DB event
         await newEvent.save();
 
@@ -42,8 +40,7 @@ const createEvent = async(req, res = response) => {
         return res.status(201).json({
             ok: true,
         });
-
-     
+ 
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -55,7 +52,7 @@ const createEvent = async(req, res = response) => {
 }
 
 const suscribeEvent = async(req, res = response) => {
-
+        User.findByIdAndUpdate({_id: req.body.userSuscriber},{eventSuscriber:req.params.id});
         Event.findByIdAndUpdate({_id: req.params.id},req.body).then(function(){
         Event.findOne({_id: req.params.id}).then(function(event){
             res.send(event)
@@ -79,8 +76,19 @@ const unsuscribeEvent = async(req, res = response) => {
 const getAllEvents = async(req, res = response) => {
     
     try{
+        if(req.body.type!=null){
+        var dbEvents = await Event.find({
+            type: { $in: [req.body.type]}});
+        return res.json({
+            dbEvents
+        });
+    }
+        
+        else{
+        var dbEvents = await Event.find();
+        }
         // Read BD
-        const dbEvents = await Event.find();
+        
     
         // Generate JWT
     
@@ -120,5 +128,5 @@ module.exports = {
     getAllEvents,
     obtainEvent,
     obtainUserEvent,
-    unsuscribeEvent
+    unsuscribeEvent,
 }
