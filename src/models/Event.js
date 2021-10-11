@@ -4,20 +4,16 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const EventSchema = new Schema({
     creationDate: {
-        type: Date,
-        required: true
+        type: Date
     },
     title: {
-        type: String,
-        required: true
+        type: String
     },
     description: {
-        type: String,
-        required: true
+        type: String
     },
     location: {
-        type: String,
-        required: true
+        type: String
     },
     type: [{
         type: ObjectId,
@@ -28,20 +24,17 @@ const EventSchema = new Schema({
     }],
     geoposition: {
         latitude: Number,
-        longitude: Number,
+        longitude: Number
     },
     finishDate: {
-        type: Date,
-        required: true
+        type: Date
     },
     startDate: {
-        type: Date,
-        required: true
+        type: Date
     },
     userPublished: {
         type: ObjectId,
         ref: 'User',
-        required: true
 
     },
     userSuscriber: [{
