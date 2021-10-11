@@ -6,7 +6,16 @@ const { validateFields } = require('../services/validate-params/validate-fields'
 const router = Router();
 
 // Create new event
-router.post( '/new', [], createEvent );
+router.post('/new',
+    [
+        check('title', 'title is mandatory').not().isEmpty(),
+        check('description', 'description is mandatory').not().isEmpty(),
+        check('location', 'location is mandatory').not().isEmpty(),
+        check('startDate', 'startDate is mandatory').not().isEmpty(),
+        check('finishDate', 'finishDate is mandatory').not().isEmpty(),
+        validateFields
+    ],
+    createEvent);
 
 router.put('/:id', suscribeEvent);
 

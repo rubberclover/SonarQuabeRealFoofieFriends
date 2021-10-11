@@ -7,13 +7,16 @@ const EventSchema = new Schema({
         type: Date
     },
     title: {
-        type: String
+        type: String,
+        required: true
     },
     description: {
-        type: String
+        type: String,
+        required: true
     },
     location: {
-        type: String
+        type: String,
+        required: true
     },
     type: [{
         type: ObjectId,
@@ -27,20 +30,20 @@ const EventSchema = new Schema({
         longitude: Number
     },
     finishDate: {
-        type: Date
+        type: Date,
+        required: true
     },
     startDate: {
-        type: Date
+        type: Date,
+        required: true
     },
     userPublished: {
         type: ObjectId,
-        ref: 'User',
-
+        ref: 'User'
     },
     userSuscriber: [{
         type: ObjectId,
         ref: 'User',
-
     }]
 });
 

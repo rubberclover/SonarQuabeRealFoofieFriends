@@ -7,8 +7,6 @@ const Type = mongoose.Types;
 const today= new Date();
 
 const createEvent = async(req, res = response) => {
-    console.log("patata");
-    console.log(req.body);
     var dd = String(today.getDate()+ 1).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
@@ -18,7 +16,6 @@ const createEvent = async(req, res = response) => {
     
     // Create event with model
     const newEvent= new Event({
-          _id: Type.ObjectId(),
           creationDate: todayDate,
           title: title,
           description: description,
