@@ -2,7 +2,7 @@ const { response } = require('express');
 const TagEstablishment = require('../models/TagEstablishment');
 const mongoose = require('mongoose');
 const Establishment = require('../models/Establishment');
-const Type = mongoose.Types;
+const TagEstablishment = require('../models/TagEstablishment');
 
 
 const createEstablishment = async(req, res = response) => {
@@ -11,7 +11,6 @@ const createEstablishment = async(req, res = response) => {
 
     // Create establishment with model
     const newEstablishment= new Establishment({
-          _id: Type.ObjectId(),
           location: location,
           name: name,
           timeClose: timeClose,
@@ -49,28 +48,17 @@ const createEstablishment = async(req, res = response) => {
         });
     }
 
-}
+}*/
 
 const getAllEstablishments = async(req, res = response) => {
     
     try{
-        if(req.body.type!=null){
-        var dbEstablishments = await Establishment.find({
-            type: { $in: [req.body.type]}});
-        return res.json({
-            dbEstablishments
-        });
-    }
-        
-        else{
-        var dbEstablishments = await Establishment.find();
-        }
         // Read BD
-        // Generate JWT
+        const dbEstablishment = await Establishment.find();
     
         return res.json({
             ok: true,
-            dbEstablishments
+            dbEstablishment
         });
     } catch (error) {
         console.log(error);
@@ -82,7 +70,7 @@ const getAllEstablishments = async(req, res = response) => {
     }
 }
 
-const obtainEstablishment = async(req, res = response) => {
+/*const obtainEstablishment = async(req, res = response) => {
 
     Establishment.findById({_id: req.params.id}).then(function(establishment){
         res.send(establishment);
@@ -96,7 +84,7 @@ const obtainOwnerEstablishment = async(req, res = response) => {
         res.send(establishment);
     });
 
-};
+};*/
 
 const getAllTags = async (req, res = response) => {
     try {
