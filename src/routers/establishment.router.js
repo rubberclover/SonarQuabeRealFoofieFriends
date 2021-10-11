@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { createEstablishment,getAllEstablishments,obtainEstablishment,obtainOwnerEstablishment } = require('../controllers/establishment.controller');
+const { createEstablishment,getAllEstablishments,obtainEstablishment,obtainOwnerEstablishment, getAllTags } = require('../controllers/establishment.controller');
 const { validateFields } = require('../services/validate-params/validate-fields');
 const router = Router();
 
@@ -17,5 +17,8 @@ router.get('/getAllEstablishments', getAllEstablishments);
 router.get('/:id', obtainEstablishment);
 
 router.get('obtainOwnerEstablishment/:id', obtainOwnerEstablishment);
+
+router.get('/getAllTags', getAllTags);
+
 
 module.exports = router;

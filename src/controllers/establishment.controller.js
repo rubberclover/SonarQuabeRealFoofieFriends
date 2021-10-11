@@ -7,7 +7,7 @@ const Type = mongoose.Types;
 const createEstablishment = async(req, res = response) => {
 
     const { location, name, timeClose, timeOpen, type, rating, image,geoposition,owner } = req.body;
-    
+
     // Create establishment with model
     const newEstablishment= new Establishment({
           _id: Type.ObjectId(),
@@ -26,18 +26,22 @@ const createEstablishment = async(req, res = response) => {
     })
 
     try{
-        
+        // Read BD
+        const dbEstablishment = await Establishment.find();
+    
         // Create DB establishment
         await newEstablishment.save();
 
         // Generate response
         return res.status(201).json({
             ok: true,
+            dbEstablishment
         });
 
      
     } catch (error) {
         console.log(error);
+
         return res.status(500).json({
             ok: false,
             msg: 'Please, talk with administrator'
@@ -93,9 +97,32 @@ const obtainOwnerEstablishment = async(req, res = response) => {
 
 };
 
+const getAllTags = async (req, res = response) => {
+    try {
+        // Read BD
+        const dbTagEstablishment = await TagEstablishment.find();
+
+        return res.status(200).json({
+            ok: true,
+            dbTagE: dbTagEstablishment.filter(tag => tag.type === 'E'),
+            dbTagC: dbTagEstablishment.filter(tag => tag.type === 'C'),
+            dbTagD: dbTagEstablishment.filter(tag => tag.type === 'D')
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
 module.exports = {
     createEstablishment,
     getAllEstablishments,
     obtainEstablishment,
     obtainOwnerEstablishment
+    getAllTags
+
 }
