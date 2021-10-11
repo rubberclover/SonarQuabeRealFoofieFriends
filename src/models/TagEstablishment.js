@@ -11,7 +11,7 @@ const tagEstablishmentSchema = new Schema({
         type: String,
         required: true
     },
-    name: {
+    color: {
         type: String,
         required: true
     }
