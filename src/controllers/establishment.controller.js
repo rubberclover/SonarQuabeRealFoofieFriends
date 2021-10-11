@@ -1,8 +1,9 @@
 const { response } = require('express');
-const Event = require('../models/Establishment');
+const TagEstablishment = require('../models/TagEstablishment');
 const mongoose = require('mongoose');
 const Establishment = require('../models/Establishment');
 const Type = mongoose.Types;
+
 
 const createEstablishment = async(req, res = response) => {
 
@@ -120,9 +121,10 @@ const getAllTags = async (req, res = response) => {
 
 module.exports = {
     createEstablishment,
+  
     getAllEstablishments,
     obtainEstablishment,
-    obtainOwnerEstablishment
+    obtainOwnerEstablishment,
     getAllTags
 
 }
