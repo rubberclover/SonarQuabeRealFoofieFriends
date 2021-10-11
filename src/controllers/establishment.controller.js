@@ -75,9 +75,9 @@ const getAllEstablishments = async(req, res = response) => {
         res.send(establishment);
     });
 
-};
+};*/
 
-const obtainOwnerEstablishment = async(req, res = response) => {
+/*const obtainOwnerEstablishment = async(req, res = response) => {
 
     Establishment.find({owner: req.params.id}).then(function(establishment){
         res.send(establishment);
@@ -108,7 +108,6 @@ const getAllTags = async (req, res = response) => {
 
 module.exports = {
     //createEstablishment,
-  
     getAllEstablishments,
     //obtainEstablishment,
     //obtainOwnerEstablishment,
