@@ -1,12 +1,12 @@
 const { response } = require('express');
 const Event = require('../models/Event');
+const TagEvent = require('../models/TagEvent');
 const User = require('../models/User');
 const mongoose = require('mongoose');
 const Type = mongoose.Types;
 const today= new Date();
 
 const createEvent = async(req, res = response) => {
-
     var dd = String(today.getDate()+ 1).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
@@ -16,7 +16,6 @@ const createEvent = async(req, res = response) => {
     
     // Create event with model
     const newEvent= new Event({
-          _id: Type.ObjectId(),
           creationDate: todayDate,
           title: title,
           description: description,
@@ -127,6 +126,25 @@ const obtainUserEvent = async(req, res = response) => {
 
 };
 
+const getAllEventTags = async (req, res = response) => {
+    try {
+        // Read BD
+        const dbTagEvent = await TagEvent.find();
+
+        return res.status(200).json({
+            ok: true,
+            dbTagEvent
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
 module.exports = {
     createEvent,
     suscribeEvent,
@@ -134,4 +152,5 @@ module.exports = {
     obtainEvent,
     obtainUserEvent,
     unsuscribeEvent,
+    getAllEventTags,
 }

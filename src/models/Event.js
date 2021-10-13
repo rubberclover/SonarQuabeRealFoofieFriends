@@ -4,8 +4,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const EventSchema = new Schema({
     creationDate: {
-        type: Date,
-        required: true
+        type: Date
     },
     title: {
         type: String,
@@ -28,7 +27,7 @@ const EventSchema = new Schema({
     }],
     geoposition: {
         latitude: Number,
-        longitude: Number,
+        longitude: Number
     },
     finishDate: {
         type: Date,
@@ -40,14 +39,11 @@ const EventSchema = new Schema({
     },
     userPublished: {
         type: ObjectId,
-        ref: 'User',
-        required: true
-
+        ref: 'User'
     },
     userSuscriber: [{
         type: ObjectId,
         ref: 'User',
-
     }]
 });
 
