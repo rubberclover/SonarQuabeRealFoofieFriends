@@ -52,23 +52,27 @@ const createEvent = async(req, res = response) => {
 }
 
 const suscribeEvent = async(req, res = response) => {
-        User.findOneAndUpdate({_id: req.body.userSuscriber},{$set: {eventSuscriber:req.params.id}}).then(function(){
-        Event.findByIdAndUpdate({_id: req.params.id},req.body).then(function(){
+        const UserSuscriber = req.body.userSuscriber;
+        User.findByIdAndUpdate({_id: UserSuscriber},{$push: {eventSuscriber: req.params.id}}).then(function(){
+        Event.findByIdAndUpdate({_id: req.params.id},{$push:req.body}).then(function(){
         Event.findOne({_id: req.params.id}).then(function(event){
             res.send(event)
         });
    
     });
-});
+        });
 
 }
 
 const unsuscribeEvent = async(req, res = response) => {
-
+    const UserSuscriber = req.body.userSuscriber;
+    User.findByIdAndUpdate({_id: UserSuscriber},{$pull: {eventSuscriber: req.params.id}}).then(function(){
     Event.findOneAndUpdate({_id: req.params.id}, {$pull: {userSuscriber: req.body.userSuscriber}}).then(function(){
     Event.findOne({_id: req.params.id}).then(function(event){
         res.send(event)
     });
+
+});
 
 });
 

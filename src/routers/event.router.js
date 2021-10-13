@@ -15,11 +15,11 @@ router.post( '/new', [
     validateFields
 ], createEvent );
 
-router.put('/:id', suscribeEvent);
+router.put('/suscribeEvent/:id', suscribeEvent);
 
 router.get('/getAllEvents', getAllEvents);
 
-router.get('/:id', obtainEvent);
+router.get('/obtainEvent/:id', obtainEvent);
 
 router.get('/obtainUserEvent/:id', obtainUserEvent);
 

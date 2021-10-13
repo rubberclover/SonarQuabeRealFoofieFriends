@@ -1,6 +1,8 @@
 const { response } = require('express');
 const Post = require('../models/Post');
+const Channel = require('../models/Channel');
 const mongoose = require('mongoose');
+const { post } = require('../routers/auth.router');
 const Type = mongoose.Types;
 const today= new Date();
 
@@ -45,6 +47,61 @@ const createPost = async(req, res = response) => {
 
 }
 
+const obtainPost = async(req, res = response) => {
+
+    Post.findById({_id: req.params.id}).then(function(post){
+        res.send(post);
+    });
+
+};
+
+const obtainChannelPost=async(req, res = response) => {
+try{
+    var dbChannels = await Channel.findById({_id: req.params.id});
+    const PostId = dbChannels.post;
+    Post.findById({_id: PostId}).then(function(post){
+        res.send(post);
+    });
+}
+catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+        ok: false,
+        msg: 'Talk with the administrator'
+    });
+}
+}
+
+const getAllPosts = async(req, res = response) => {
+    
+    try{
+        if(req.body.tagPost!=null){
+        var dbPosts = await Post.find({
+            tagPost: { $in: [req.body.tagPost]}});
+        return res.json({
+            dbPosts
+        });
+    }   
+        var dbPosts = await Post.find();
+    
+        return res.json({
+            ok: true,
+            dbPosts
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
 module.exports = {
-    createPost
+    createPost,
+    obtainPost,
+    getAllPosts,
+    obtainChannelPost
 }

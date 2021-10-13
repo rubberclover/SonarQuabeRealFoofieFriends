@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\models"
+    "\\src\\controllers",
+    "\\src\\models",
+    "\\src\\routers"
   ],
-  "SelectedNode": "\\src\\models\\Establishment.js",
+  "SelectedNode": "\\src\\controllers\\establishment.controller.js",
   "PreviewInSolutionExplorer": false
 }
