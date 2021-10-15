@@ -28,13 +28,12 @@ const createEvent = async(req, res = response) => {
           geoposition: {
              latitude: 0,
              longitude:0
-          }
+          },
+          images:[]
     })
 
-    console.log(images);
-
-    for(let image in images){
-        newEvent.images.push(image);
+    for(let i;i<images.lenght;i++){
+        newEvent.images.push(images[i]);
     }
     
 
