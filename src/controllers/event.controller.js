@@ -12,7 +12,7 @@ const createEvent = async(req, res = response) => {
     var yyyy = today.getFullYear();
     const todayDate = mm + '/' + dd + '/' + yyyy;
 
-    const { title, description, location, type, image, startDate, finishDate,userPublished } = req.body;
+    const { title, description, location, type, images, startDate, finishDate, userPublished } = req.body;
     
     // Create event with model
     const newEvent= new Event({
@@ -21,7 +21,6 @@ const createEvent = async(req, res = response) => {
           description: description,
           location: location,
           type: type,
-          image: image,
           startDate: startDate,
           finishDate: finishDate,
           userPublished: userPublished,
@@ -31,6 +30,14 @@ const createEvent = async(req, res = response) => {
              longitude:0
           }
     })
+
+    console.log(images);
+
+    for(let image in images){
+        newEvent.images.push(image);
+    }
+    
+
     try{
         // Create DB event
         await newEvent.save();

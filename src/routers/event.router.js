@@ -11,6 +11,7 @@ router.post('/new',
         check('title', 'title is mandatory').not().isEmpty(),
         check('description', 'description is mandatory').not().isEmpty(),
         check('location', 'location is mandatory').not().isEmpty(),
+        check('type', 'type is mandatory').not().isEmpty(),
         check('startDate', 'startDate is mandatory').not().isEmpty(),
         check('finishDate', 'finishDate is mandatory').not().isEmpty(),
         validateFields

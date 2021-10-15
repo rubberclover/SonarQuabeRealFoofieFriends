@@ -22,7 +22,7 @@ const EventSchema = new Schema({
         type: ObjectId,
         ref: 'TagEvent'
     }],
-    image: [{
+    images: [{
         url: String
     }],
     geoposition: {
