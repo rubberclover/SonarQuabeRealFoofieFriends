@@ -1,6 +1,8 @@
 const { response } = require('express');
 const TagEstablishment = require('../models/TagEstablishment');
 const Establishment = require('../models/Establishment');
+const mongoose = require('mongoose');
+const Type = mongoose.Types;
 
 
 const createEstablishment = async(req, res = response) => {
@@ -46,15 +48,71 @@ const createEstablishment = async(req, res = response) => {
 }
 
 const getAllEstablishments = async(req, res = response) => {
-    
     try{
         // Read BD
-        const dbEstablishment = await Establishment.find();
+        var dbEstablishment = await Establishment.find();
     
         return res.json({
             ok: true,
             dbEstablishment
         });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
+const getAllEstablishmentsFilter = async(req, res = response) => {
+    try{
+        if(req.body.type!=null){
+            var EstablishmentObtained=[];
+            const TagsBody = req.body.type;
+            let i=0;
+            while(i< TagsBody.length){
+            var TagFound= await TagEstablishment.find({type: TagsBody[i]});
+            let k=0;
+            while(k< TagFound.length){
+                var EstablishmentFound= await Establishment.find(
+                { type: { $in: Type.ObjectId(TagFound[k]['_id']).valueOf()}});
+                if(EstablishmentFound.length>0 ){
+                    for(let h=0;h<EstablishmentFound.length;h++){
+                        EstablishmentObtained.push(EstablishmentFound[h]);
+                    }
+                }
+                k++;
+            }
+            i++;
+            }
+            let Found= false;
+            let uniqueChars = [];
+            EstablishmentObtained.forEach((c) => {
+                for(let h=0;h<EstablishmentObtained.length;h++){
+                    if (JSON.stringify(c) === JSON.stringify(EstablishmentObtained[h])) {
+                    Found=true;
+                    EstablishmentObtained.splice(h, 1);
+                 }
+                }
+                if(Found){
+                    uniqueChars.push(c);
+                } 
+            });
+            EstablishmentObtained=EstablishmentObtained.concat(uniqueChars);
+            return res.json({
+                EstablishmentObtained
+            });
+        }
+        else if(req.body.name!=null){
+            var dbEstablishmentTag = await Establishment.find({
+                name: { $in: [req.body.name]}});
+            return res.json({
+                dbEstablishmentTag
+            });
+        }
+
     } catch (error) {
         console.log(error);
 
@@ -105,6 +163,7 @@ const getAllTags = async (req, res = response) => {
 module.exports = {
     createEstablishment,
     getAllEstablishments,
+    getAllEstablishmentsFilter,
     obtainEstablishment,
     obtainOwnerEstablishment,
     getAllTags

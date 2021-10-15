@@ -2,7 +2,6 @@ const { response } = require('express');
 const Post = require('../models/Post');
 const Channel = require('../models/Channel');
 const mongoose = require('mongoose');
-const { post } = require('../routers/auth.router');
 const Type = mongoose.Types;
 const today= new Date();
 
@@ -58,10 +57,15 @@ const obtainPost = async(req, res = response) => {
 const obtainChannelPost=async(req, res = response) => {
 try{
     var dbChannels = await Channel.findById({_id: req.params.id});
+    var Posts=[];
     const PostId = dbChannels.post;
-    Post.findById({_id: PostId}).then(function(post){
-        res.send(post);
-    });
+    let i=0;
+    while(i< PostId.length){
+    var PostFound= await Post.findById({_id: Type.ObjectId(PostId[i]).valueOf()});
+    Posts.push(PostFound);
+    i++;
+    }
+    res.send(Posts);  
 }
 catch (error) {
     console.log(error);

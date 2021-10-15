@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { createEstablishment,getAllEstablishments,obtainEstablishment,obtainOwnerEstablishment,getAllTags } = require('../controllers/establishment.controller');
+const { createEstablishment,getAllEstablishments,obtainEstablishment,obtainOwnerEstablishment,getAllTags,getAllEstablishmentsFilter } = require('../controllers/establishment.controller');
 const { validateFields } = require('../services/validate-params/validate-fields');
 const router = Router();
 
@@ -14,6 +14,8 @@ router.post( '/new', [
 
 
 router.get('/getAllEstablishments', getAllEstablishments);
+
+router.get('/getAllEstablishmentsFilter', getAllEstablishmentsFilter);
 
 router.get('/getEstablishment/:id', obtainEstablishment);
 

@@ -80,6 +80,25 @@ const unsuscribeEvent = async(req, res = response) => {
 const getAllEvents = async(req, res = response) => {
     
     try{
+        var dbEvents = await Event.find();
+    
+        return res.json({
+            ok: true,
+            dbEvents
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
+const getAllEventsFilter = async(req, res = response) => {
+    
+    try{
         if(req.body.type!=null){
         var dbEvents = await Event.find({
             type: { $in: [req.body.type]}});
@@ -92,8 +111,6 @@ const getAllEvents = async(req, res = response) => {
         var dbEvents = await Event.find();
         }
         // Read BD
-        
-    
         // Generate JWT
     
         return res.json({
@@ -120,11 +137,20 @@ const obtainEvent = async(req, res = response) => {
 
 const obtainUserEvent = async(req, res = response) => {
 
+    const UserEvents = await User.findById({_id: Type.ObjectId(req.params.id)});
+    Event.find({_id: UserEvents.eventSuscriber}).then(function(event){
+       res.send(event);
+   });
+
+};
+
+/*const obtainUserEvent = async(req, res = response) => {
+
     Event.find({userSuscriber: req.params.id}).then(function(event){
         res.send(event);
     });
 
-};
+};*/
 
 const getAllEventTags = async (req, res = response) => {
     try {
@@ -153,4 +179,5 @@ module.exports = {
     obtainUserEvent,
     unsuscribeEvent,
     getAllEventTags,
+    getAllEventsFilter
 }
