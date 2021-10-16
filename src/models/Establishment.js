@@ -29,7 +29,7 @@ const EstablishmentSchema = new Schema({
 
     }],
     image: [{
-        url: String
+        url: String,
     }],
     geoposition: {
         latitude: Number,
