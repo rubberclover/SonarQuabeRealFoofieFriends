@@ -23,13 +23,8 @@ const EstablishmentSchema = new Schema({
         type: ObjectId,
         ref: 'TagEstablishment'
     }],
-    rating: [{
-        type: ObjectId,
-        ref: 'Rating'
-
-    }],
     image: [{
-        url: String
+        url: String,
     }],
     geoposition: {
         latitude: Number,
