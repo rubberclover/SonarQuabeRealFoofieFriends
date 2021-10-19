@@ -113,6 +113,14 @@ const getAllEstablishmentsFilter = async(req, res = response) => {
             });
         }
 
+        else if(req.body.direccion!=null){
+            var dbEstablishmentTag = await Establishment.find({
+                direccion: { $in: [req.body.direccion]}});
+            return res.json({
+                dbEstablishmentTag
+            });
+        }
+
     } catch (error) {
         console.log(error);
 
