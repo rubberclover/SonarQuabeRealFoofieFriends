@@ -23,7 +23,7 @@ const EventSchema = new Schema({
         ref: 'TagEvent'
     }],
     images: [{
-        url: String
+        type: String
     }],
     geoposition: {
         latitude: Number,
