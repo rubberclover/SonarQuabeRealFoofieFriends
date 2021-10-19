@@ -12,8 +12,8 @@ const createEvent = async(req, res = response) => {
     var yyyy = today.getFullYear();
     const todayDate = mm + '/' + dd + '/' + yyyy;
 
-    const { title, description, location, type, images, startDate, finishDate, userPublished } = req.body;
-
+    const { title, description, location, type, images, startDate, finishDate,userPublished } = req.body;
+    
     // Create event with model
     const newEvent= new Event({
           creationDate: todayDate,
@@ -28,14 +28,13 @@ const createEvent = async(req, res = response) => {
           geoposition: {
              latitude: 0,
              longitude:0
-          },
+          } ,
           images: [],
     })
 
     for(let i = 0;i<images.length;i++){
         newEvent.images.push(images[i]);
     }
-
     try{
         // Create DB event
         await newEvent.save();
@@ -105,10 +104,42 @@ const getAllEventsFilter = async(req, res = response) => {
     
     try{
         if(req.body.type!=null){
-        var dbEvents = await Event.find({
-            type: { $in: [req.body.type]}});
+        var EventObtained=[];
+        const TagsBody = req.body.type;
+        let i=0;
+        while(i< TagsBody.length){
+        var TagFound= await TagEvent.find({_id: TagsBody[i]});
+        let k=0;
+        while(k< TagFound.length){
+       // var dbEvents = await Event.find({
+            //type: { $in: [req.body.type]}});
+        var EventFound= await Event.find(
+        { type: { $in: Type.ObjectId(TagFound[k]['_id']).valueOf()}});
+        if(EventFound.length>0 ){
+        for(let h=0;h<EventFound.length;h++){
+            EventObtained.push(EventFound[h]);
+            }
+        }
+        k++;
+        }
+        i++;
+        }
+        let Found= false;
+            let uniqueChars = [];
+            EventObtained.forEach((c) => {
+                for(let h=0;h<EventObtained.length;h++){
+                    if (JSON.stringify(c) === JSON.stringify(EventObtained[h])) {
+                    Found=true;
+                    EventObtained.splice(h, 1);
+                 }
+                }
+                if(Found){
+                    uniqueChars.push(c);
+                } 
+            });
+            EventObtained=EventObtained.concat(uniqueChars);
         return res.json({
-            dbEvents
+            EventObtained
         });
     }
         
@@ -175,6 +206,8 @@ const getAllEventTags = async (req, res = response) => {
         });
     }
 }
+
+
 
 module.exports = {
     createEvent,
