@@ -103,45 +103,19 @@ const getAllEvents = async(req, res = response) => {
 const getAllEventsFilter = async(req, res = response) => {
     
     try{
-        if(req.body.type!=null){
-        var EventObtained=[];
-        const TagsBody = req.body.type;
-        let i=0;
-        while(i< TagsBody.length){
-        var TagFound= await TagEvent.find({_id: TagsBody[i]});
-        let k=0;
-        while(k< TagFound.length){
-       // var dbEvents = await Event.find({
-            //type: { $in: [req.body.type]}});
-        var EventFound= await Event.find(
-        { type: { $in: Type.ObjectId(TagFound[k]['_id']).valueOf()}});
-        if(EventFound.length>0 ){
-        for(let h=0;h<EventFound.length;h++){
-            EventObtained.push(EventFound[h]);
+        if(req.body.tags!=null){
+            const TagsBody = req.body.tags;
+            const TagsFound = [];
+            let k=0;
+            while(k< TagsBody.length){
+            TagsFound.push({"type":Type.ObjectId(TagsBody[k])})
+            k++;    
             }
-        }
-        k++;
-        }
-        i++;
-        }
-        let Found= false;
-            let uniqueChars = [];
-            EventObtained.forEach((c) => {
-                for(let h=0;h<EventObtained.length;h++){
-                    if (JSON.stringify(c) === JSON.stringify(EventObtained[h])) {
-                    Found=true;
-                    EventObtained.splice(h, 1);
-                 }
-                }
-                if(Found){
-                    uniqueChars.push(c);
-                } 
+            var TagFound= await Event.find({$or: TagsFound });
+            return res.json({
+                TagFound
             });
-            EventObtained=EventObtained.concat(uniqueChars);
-        return res.json({
-            EventObtained
-        });
-    }
+        }
         
         else{
         var dbEvents = await Event.find();

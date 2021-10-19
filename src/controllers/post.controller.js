@@ -12,7 +12,7 @@ const createPost = async(req, res = response) => {
     var yyyy = today.getFullYear();
     const todayDate = mm + '/' + dd + '/' + yyyy;
 
-    const { title, content, creationDate, tagPost, image, user } = req.body;
+    const { title, content, tagPost, image, user } = req.body;
     
     // Create post with model
     const newPost= new Post({
@@ -65,7 +65,11 @@ try{
     Posts.push(PostFound);
     i++;
     }
-    res.send(Posts);  
+    //res.send(Posts);  
+    return res.json({
+        Posts,
+        dbChannels
+    });
 }
 catch (error) {
     console.log(error);

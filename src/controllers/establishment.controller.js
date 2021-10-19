@@ -67,41 +67,17 @@ const getAllEstablishments = async(req, res = response) => {
 
 const getAllEstablishmentsFilter = async(req, res = response) => {
     try{
-        if(req.body.type!=null){
-            var EstablishmentObtained=[];
-            const TagsBody = req.body.type;
-            let i=0;
-            while(i< TagsBody.length){
-            var TagFound= await TagEstablishment.find({type: TagsBody[i]});
+        if(req.body.tags!=null){
+            const TagsBody = req.body.tags;
+            const TagsFound = [];
             let k=0;
-            while(k< TagFound.length){
-                var EstablishmentFound= await Establishment.find(
-                { type: { $in: Type.ObjectId(TagFound[k]['_id']).valueOf()}});
-                if(EstablishmentFound.length>0 ){
-                    for(let h=0;h<EstablishmentFound.length;h++){
-                        EstablishmentObtained.push(EstablishmentFound[h]);
-                    }
-                }
-                k++;
+            while(k< TagsBody.length){
+            TagsFound.push({"type":Type.ObjectId(TagsBody[k])})
+            k++;    
             }
-            i++;
-            }
-            let Found= false;
-            let uniqueChars = [];
-            EstablishmentObtained.forEach((c) => {
-                for(let h=0;h<EstablishmentObtained.length;h++){
-                    if (JSON.stringify(c) === JSON.stringify(EstablishmentObtained[h])) {
-                    Found=true;
-                    EstablishmentObtained.splice(h, 1);
-                 }
-                }
-                if(Found){
-                    uniqueChars.push(c);
-                } 
-            });
-            EstablishmentObtained=EstablishmentObtained.concat(uniqueChars);
+            var TagFound= await Establishment.find({$or: TagsFound });
             return res.json({
-                EstablishmentObtained
+                TagFound
             });
         }
         else if(req.body.name!=null){
