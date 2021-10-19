@@ -33,7 +33,7 @@ const createEvent = async(req, res = response) => {
     })
 
     for(let i = 0;i<images.length;i++){
-        newEvent.images.push({url : images[i]});
+        newEvent.images.push(images[i]);
     }
     try{
         // Create DB event
