@@ -26,6 +26,7 @@ const createRating = async(req, res = response) => {
         // Generate response
         return res.status(201).json({
             ok: true,
+            ratings: []
         });
 
      
@@ -42,7 +43,10 @@ const createRating = async(req, res = response) => {
 const obtainRatingEstablishment = async(req, res = response) => {
 
     Rating.find({establishment: req.params.id}).then(function(rating){
-        res.send(rating);
+        res.status(200).json({
+            ok: true,
+            ratings: rating
+        });
     });
 
 };

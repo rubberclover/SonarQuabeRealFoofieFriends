@@ -7,7 +7,7 @@ const Type = mongoose.Types;
 
 const createEstablishment = async(req, res = response) => {
 
-    const { location, name, timeClose, timeOpen, type, rating, image,geoposition,owner } = req.body;
+    const { location, name, timeClose, timeOpen, type, image,geoposition,owner } = req.body;
 
     // Create establishment with model
     const newEstablishment= new Establishment({
@@ -17,7 +17,6 @@ const createEstablishment = async(req, res = response) => {
           timeOpen: timeOpen,
           type: type,
           image: image,
-          rating: rating,
           owner: owner,
           geoposition: {
              latitude: 0,
