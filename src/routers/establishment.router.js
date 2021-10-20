@@ -15,7 +15,7 @@ router.post( '/new', [
 
 router.get('/getAllEstablishments', getAllEstablishments);
 
-router.get('/getAllEstablishmentsFilter', getAllEstablishmentsFilter);
+router.post('/getAllEstablishmentsFilter', getAllEstablishmentsFilter);
 
 router.get('/getEstablishment/:id', obtainEstablishment);
 
