@@ -68,6 +68,14 @@ const getAllEstablishments = async(req, res = response) => {
 const getAllEstablishmentsFilter = async(req, res = response) => {
     try{
         if(req.body.tags!=null){
+            if(req.body.tags.length == 0){
+                var dbEstablishment = await Establishment.find();
+    
+                return res.json({
+                    ok: true,
+                    dbEstablishment: dbEstablishment
+                });
+            }
             const TagsBody = req.body.tags;
             const TagsFound = [];
             let k=0;
@@ -77,14 +85,16 @@ const getAllEstablishmentsFilter = async(req, res = response) => {
             }
             var TagFound= await Establishment.find({$or: TagsFound });
             return res.json({
-                TagFound
+                ok: true,
+                dbEstablishment: TagFound
             });
         }
         else if(req.body.name!=null){
             var dbEstablishmentTag = await Establishment.find({
                 name: { $in: [req.body.name]}});
             return res.json({
-                dbEstablishmentTag
+                ok: true,
+                dbEstablishment: dbEstablishmentTag
             });
         }
 
@@ -92,6 +102,7 @@ const getAllEstablishmentsFilter = async(req, res = response) => {
             var dbEstablishmentTag = await Establishment.find({
                 direccion: { $in: [req.body.direccion]}});
             return res.json({
+                ok: true,
                 dbEstablishmentTag
             });
         }
