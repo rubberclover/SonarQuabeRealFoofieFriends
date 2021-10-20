@@ -5,6 +5,7 @@ const User = require('../models/User');
 const mongoose = require('mongoose');
 const Type = mongoose.Types;
 const today= new Date();
+const url = require('url');
 
 const createEvent = async(req, res = response) => {
     var dd = String(today.getDate()+ 1).padStart(2, '0');
@@ -101,10 +102,12 @@ const getAllEvents = async(req, res = response) => {
 }
 
 const getAllEventsFilter = async(req, res = response) => {
+    var q = url.parse(req.url, true);
+    let FindById=q.search;
     
     try{
-        if(req.body.tags!=null){
-            const TagsBody = req.body.tags;
+        if(FindById!=null){
+            let TagsBody=FindById.substring(1).split("&");
             const TagsFound = [];
             let k=0;
             while(k< TagsBody.length){
