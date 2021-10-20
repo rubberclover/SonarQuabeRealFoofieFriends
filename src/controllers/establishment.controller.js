@@ -64,37 +64,74 @@ const getAllEstablishments = async(req, res = response) => {
         });
     }
 }
-
+/*
+    tags:{
+        tagsE: [] //listas de strings de id establishments //["",""]
+        tagsC: []
+        tagsD: []
+    }
+*/
+/*
+    in our application we consider establishments with the minimum of 1 type "E" but each establishment can have 0..* types "C" or "D"
+*/
 const getAllEstablishmentsFilter = async(req, res = response) => {
     try{
+        var tagsE = await TagEstablishment.find({type: "E"}, {_id: 1}); //tagsE = [{_id:""},{_id:""}]
+        var tagsESelected = [];
+        var tagsCSelected = [];
+        var tagsDSelected = [];
         if(req.body.tags!=null){
-            if(req.body.tags.length == 0){
-                var dbEstablishment = await Establishment.find();
-    
-                return res.json({
-                    ok: true,
-                    dbEstablishment: dbEstablishment
+            if(req.body.tags.tagsE.length == 0){
+                for(let i=0; i<tagsE.length;i++){
+                    tagsESelected.push(tagsE[i]._id.valueOf());
+                }
+            }
+            else
+                tagsESelected = req.body.tags.tagsE;
+            tagsCSelected = req.body.tags.tagsC;
+            tagsDSelected = req.body.tags.tagsD;
+            const TagsFoundE = [];
+            const TagsFoundC = [];
+            const TagsFoundD = [];
+            let k=0;
+            while(k< tagsESelected.length){
+                TagsFoundE.push({"type":Type.ObjectId(tagsESelected[k])})
+                k++;    
+            }
+            var EstablishmentEFound = await Establishment.find({$or: TagsFoundE});
+
+            let listEC = [];
+            if(tagsCSelected.length == 0){
+                listEC = EstablishmentEFound;
+            }
+            else{
+                tagsCSelected.forEach(tag =>{
+                    let newList = EstablishmentEFound.filter(e => e.type.includes(Type.ObjectId(tag)));
+                    newList.forEach(est =>{
+                        if(!listEC.includes(est))
+                            listEC.push(est);
+                    })
                 });
             }
-            const TagsBody = req.body.tags;
-            const TagsFound = [];
-            let k=0;
-            while(k< TagsBody.length){
-            TagsFound.push({"type":Type.ObjectId(TagsBody[k])})
-            k++;    
+            
+
+            let listECD = [];
+            if(tagsDSelected.length == 0){
+                listECD = listEC;
             }
-            var TagFound= await Establishment.find({$or: TagsFound });
+            else{
+                tagsDSelected.forEach(tag =>{
+                    let newList = listEC.filter(e => e.type.includes(Type.ObjectId(tag)));
+                    newList.forEach(est =>{
+                        if(!listECD.includes(est))
+                            listECD.push(est);
+                    })
+                });
+            }
+            
             return res.json({
                 ok: true,
-                dbEstablishment: TagFound
-            });
-        }
-        else if(req.body.name!=null){
-            var dbEstablishmentTag = await Establishment.find({
-                name: { $in: [req.body.name]}});
-            return res.json({
-                ok: true,
-                dbEstablishment: dbEstablishmentTag
+                dbEstablishment: listECD
             });
         }
 
