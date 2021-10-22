@@ -22,7 +22,7 @@ const ChannelSchema = new Schema({
 
     },
     image: [{
-        url: String
+        type: String
     }]
 });
 

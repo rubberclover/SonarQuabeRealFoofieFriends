@@ -2,6 +2,7 @@ const { response } = require('express');
 const Post = require('../models/Post');
 const Channel = require('../models/Channel');
 const mongoose = require('mongoose');
+const User = require('../models/User');
 const Type = mongoose.Types;
 const today= new Date();
 
@@ -12,24 +13,24 @@ const createPost = async(req, res = response) => {
     var yyyy = today.getFullYear();
     const todayDate = mm + '/' + dd + '/' + yyyy;
 
-    const { title, content, tagPost, image, user } = req.body;
+    const { title, content, tagPost, image, user, channel } = req.body;
+    let idPost=Type.ObjectId();
     
     // Create post with model
     const newPost= new Post({
-          _id: Type.ObjectId(),
+          _id: idPost,
           title: title,
           content: content,
           creationDate: todayDate,
-          tagPost: tagPost,
+          tagPost: Type.ObjectId(tagPost),
           image: image,
           user: user
     })
 
     try{
-        
-        // Create DB post
         await newPost.save();
-
+        await Channel.findOneAndUpdate({_id: Type.ObjectId(channel)}, {$push: {post: idPost}});
+        await User.findOneAndUpdate({_id: Type.ObjectId(user)},{$push: {post: idPost}});
         // Generate response
         return res.status(201).json({
             ok: true,

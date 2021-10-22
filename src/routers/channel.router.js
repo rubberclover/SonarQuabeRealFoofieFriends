@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const {createChannel} = require('../controllers/channel.controller');
+const {createChannel,getAllChannels} = require('../controllers/channel.controller');
 const { validateFields } = require('../services/validate-params/validate-fields');
 
 const router = Router();
@@ -11,5 +11,7 @@ router.post( '/new', [
     check('user', 'user is mandatory').not().isEmpty(),
     validateFields
 ], createChannel );
+
+router.get('/getAllChannels', getAllChannels);
 
 module.exports = router;

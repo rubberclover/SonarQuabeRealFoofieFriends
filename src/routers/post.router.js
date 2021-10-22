@@ -7,7 +7,6 @@ const router = Router();
 router.post( '/new', [
     check('title', 'title is mandatory').not().isEmpty(),
     check('content', 'content is mandatory').not().isEmpty(),
-    check('creationDate', 'creationDate is mandatory').not().isEmpty(),
     check('user', 'user is mandatory').not().isEmpty(),
     validateFields
 ], createPost );
