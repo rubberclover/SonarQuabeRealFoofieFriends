@@ -39,6 +39,14 @@ const createChannel = async(req, res = response) => {
 
 }
 
+const obtainChannel = async(req, res = response) => {
+
+    Channel.findById({_id: req.params.id}).then(function(channel){
+        res.send(channel);
+    });
+
+};
+
 const getAllChannels = async(req, res = response) => {
     
     try{ 
@@ -65,5 +73,6 @@ const getAllChannels = async(req, res = response) => {
 
 module.exports = {
     createChannel,
-    getAllChannels
+    getAllChannels,
+    obtainChannel
 }
