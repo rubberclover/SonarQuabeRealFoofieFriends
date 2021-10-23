@@ -57,15 +57,22 @@ const obtainPost = async(req, res = response) => {
 
 const obtainChannelPost=async(req, res = response) => {
 try{
+    if(req.params.id!=null){
     var dbChannels = await Channel.findById({_id: req.params.id});
+    var PostFound;
     var Posts=[];
     const PostId = dbChannels.post;
     let i=0;
     while(i< PostId.length){
-    var PostFound= await Post.findById({_id: Type.ObjectId(PostId[i]).valueOf()});
-    Posts.push(PostFound);
+    if(req.body.title!=null){
+    PostFound= await Post.find({_id: Type.ObjectId(PostId[i]).valueOf() , title: {$regex: req.body.title,$options:'i'}});
+    }
+    else{
+    PostFound= await Post.findById({_id: Type.ObjectId(PostId[i]).valueOf()});}
+    if(PostFound.length!=0){ Posts.push(PostFound);}
     i++;
     }
+  }
     //res.send(Posts);  
     return res.json({
         Posts,

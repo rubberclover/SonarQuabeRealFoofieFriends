@@ -15,7 +15,7 @@ router.get('/obtainPost/:id', obtainPost);
 
 router.get('/getAllPosts', getAllPosts);
 
-router.get('/obtainChannelPost/:id', obtainChannelPost);
+router.post('/obtainChannelPost/:id', obtainChannelPost);
 
 
 
