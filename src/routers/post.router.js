@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { createPost, obtainPost, getAllPosts,obtainChannelPost} = require('../controllers/post.controller');
+const { createPost, obtainPost, getAllPosts,obtainChannelPost, obtainChannelPostByTerm} = require('../controllers/post.controller');
 const { validateFields } = require('../services/validate-params/validate-fields');
 const router = Router();
 
@@ -11,12 +11,12 @@ router.post( '/new', [
     validateFields
 ], createPost );
 
+router.post('/obtainChannelPostByTerm/:id', obtainChannelPostByTerm);
+
 router.get('/obtainPost/:id', obtainPost);
 
 router.get('/getAllPosts', getAllPosts);
 
-router.post('/obtainChannelPost/:id', obtainChannelPost);
-
-
+router.get('/obtainChannelPost/:id', obtainChannelPost);
 
 module.exports = router;
