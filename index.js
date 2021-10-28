@@ -27,6 +27,7 @@ app.use( '/api/establishment', require('./src/routers/establishment.router') );
 app.use( '/api/rating', require('./src/routers/rating.router') );
 app.use( '/api/post', require('./src/routers/post.router') );
 app.use( '/api/channel', require('./src/routers/channel.router') );
+app.use( '/api/user', require('./src/routers/user.router') );
 
 
 app.listen( process.env.PORT, () => {

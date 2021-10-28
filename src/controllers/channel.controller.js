@@ -71,8 +71,48 @@ const getAllChannels = async(req, res = response) => {
     }
 }
 
+const getChannelsByTerm = async(req, res = response) => {
+    
+    try{ 
+        
+        var dbChannels = await Channel.find();
+        var Channels=[];
+        // Read BD
+        
+        if(req.body.title!=null){
+
+            console.log(req.body.title);
+
+            const inputTerm = req.body.title;
+
+            if(dbChannels.length > 0) {
+
+                dbChannels.forEach( channel => {
+                    if( channel.name.toLowerCase().includes(inputTerm.toLowerCase()) ) {
+                        Channels.push(channel);
+                    }
+                } );
+            }
+
+        }
+
+        return res.json({
+            ok: true,
+            Channels
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
 module.exports = {
     createChannel,
     getAllChannels,
-    obtainChannel
+    obtainChannel,
+    getChannelsByTerm
 }
