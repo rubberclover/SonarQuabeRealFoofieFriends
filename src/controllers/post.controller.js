@@ -49,12 +49,40 @@ const createPost = async(req, res = response) => {
 }
 
 const obtainPost = async(req, res = response) => {
+    try{
 
-    Post.findById({_id: req.params.id}).then(function(post){
+    var PostsReturn = await Post.findById({_id: req.params.id});
+
+    var UsuariosEncontrados= [];
+
+    UsuariosEncontrados.push(PostsReturn.user);
+
+    llamadasEsperar = [];
+    for(let i=0; i< UsuariosEncontrados.length;i++){
+        llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var UserFound = await llamadasEsperar[i];
+        PostsReturn.user= UserFound;
+    }
+    
+        return res.json({
+            ok: true,
+            PostsReturn
+        });
+    }catch (error) {
+        console.log(error);
+    
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+        }
+    /*Post.findById({_id: req.params.id}).then(function(post){
         res.send(post);
-    });
+    });*/
 
-};
+}
 
 const obtainChannelPost=async(req, res = response) => {
     try{
