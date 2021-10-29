@@ -7,8 +7,10 @@ const { generateJWT } = require('../services/helpers/auth.helper/jwt');
 
 const createUser = async(req, res = response) => {
 
-    const { email, name, password } = req.body;
+    const { email, name, password, image } = req.body;
 
+    if(image=""){
+        req.body.image="https://res.cloudinary.com/rffsmedia/image/upload/v1635521972/UserImage/585e4beacb11b227491c3399_pmwbkw.png"}
     try {
         // Verify the email
         const user = await User.findOne({ email });

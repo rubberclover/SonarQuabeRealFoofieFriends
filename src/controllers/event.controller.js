@@ -38,11 +38,12 @@ const createEvent = async(req, res = response) => {
     }
     try{
         // Create DB event
-        await newEvent.save();
+        let Event = await newEvent.save();
 
         // Generate response
         return res.status(201).json({
             ok: true,
+            eventId: Event._id
         });
  
     } catch (error) {
@@ -60,7 +61,11 @@ const suscribeEvent = async(req, res = response) => {
         User.findByIdAndUpdate({_id: UserSuscriber},{$push: {eventSuscriber: req.params.id}}).then(function(){
         Event.findByIdAndUpdate({_id: req.params.id},{$push:req.body}).then(function(){
         Event.findOne({_id: req.params.id}).then(function(event){
-            res.send(event)
+            
+            return res.status(200).json({
+                ok: true,
+                eventId: event._id
+            });
         });
    
     });

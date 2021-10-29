@@ -7,9 +7,10 @@ const createRating = async(req, res = response) => {
 
     const { confortRating, comment, realfoodRating, priceRating, establishment, user } = req.body;
     
+    let idRating=Type.ObjectId();
     // Create establishment with model
     const newRating= new Rating({
-          _id: Type.ObjectId(),
+          _id: idRating,
           confortRating: confortRating,
           comment: comment,
           realfoodRating: realfoodRating,
@@ -23,10 +24,11 @@ const createRating = async(req, res = response) => {
         // Create DB establishment
         await newRating.save();
 
+        var RatingReturn = await Rating.findById({_id: idRating});
         // Generate response
         return res.status(201).json({
             ok: true,
-            ratings: []
+            ratings: RatingReturn
         });
 
      

@@ -4,6 +4,7 @@ const TagPost = require('../models/TagPost');
 const Channel = require('../models/Channel');
 const mongoose = require('mongoose');
 const User = require('../models/User');
+const { post } = require('../routers/auth.router');
 const Type = mongoose.Types;
 const today= new Date();
 
@@ -49,12 +50,40 @@ const createPost = async(req, res = response) => {
 }
 
 const obtainPost = async(req, res = response) => {
+    try{
 
-    Post.findById({_id: req.params.id}).then(function(post){
+    var PostsReturn = await Post.findById({_id: req.params.id});
+
+    var UsuariosEncontrados= [];
+
+    UsuariosEncontrados.push(PostsReturn.user);
+
+    llamadasEsperar = [];
+    for(let i=0; i< UsuariosEncontrados.length;i++){
+        llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var UserFound = await llamadasEsperar[i];
+        PostsReturn.user= UserFound;
+    }
+    
+        return res.json({
+            ok: true,
+            PostsReturn
+        });
+    }catch (error) {
+        console.log(error);
+    
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+        }
+    /*Post.findById({_id: req.params.id}).then(function(post){
         res.send(post);
-    });
+    });*/
 
-};
+}
 
 const obtainChannelPost=async(req, res = response) => {
     try{
@@ -70,9 +99,27 @@ const obtainChannelPost=async(req, res = response) => {
             i++;
         }
 
+        var PostsReturn= Posts;
+
+        var UsuariosEncontrados= [];
+
+        Posts.forEach( post => {
+        UsuariosEncontrados.push(post.user);
+    } ); 
+
+    llamadasEsperar = [];
+    for(let i=0; i< UsuariosEncontrados.length;i++){
+        llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var UserFound = await llamadasEsperar[i];
+        PostsReturn[i].user= UserFound;
+    }
+
         //res.send(Posts);  
         return res.json({
-            Posts,
+            //Posts,
+            PostsReturn,
             dbChannels
         });
     }
@@ -121,9 +168,27 @@ const obtainChannelPostByTerm=async(req, res = response) => {
 
         }
 
+        var PostsReturn= Posts;
+
+        var UsuariosEncontrados= [];
+
+        Posts.forEach( post => {
+        UsuariosEncontrados.push(post.user);
+    } ); 
+
+    llamadasEsperar = [];
+    for(let i=0; i< UsuariosEncontrados.length;i++){
+        llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var UserFound = await llamadasEsperar[i];
+        PostsReturn[i].user= UserFound;
+    }
+
         //res.send(Posts);  
         return res.json({
-            Posts,
+            //Posts,
+            PostsReturn,
             dbChannels
         });
     }
@@ -177,15 +242,36 @@ const getAllPosts = async(req, res = response) => {
         if(req.body.tagPost!=null){
         var dbPosts = await Post.find({
             tagPost: { $in: [req.body.tagPost]}});
-        return res.json({
-            dbPosts
-        });
-    }   
+    }
+    else{
         var dbPosts = await Post.find();
+    }   
+
+    var PostsReturn= dbPosts;
+
+    var UsuariosEncontrados= [];
+
+    dbPosts.forEach( post => {
+        UsuariosEncontrados.push(post.user);
+    } ); 
+/*
+    for(let i=0; i< UsuariosEncontrados.length;i++){
+        var UserFound = await User.findById({_id: UsuariosEncontrados[i]}); 
+        PostsReturn[i].user= UserFound;
+    }*/
+
+    llamadasEsperar = [];
+    for(let i=0; i< UsuariosEncontrados.length;i++){
+        llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var UserFound = await llamadasEsperar[i];
+        PostsReturn[i].user= UserFound;
+    }
     
         return res.json({
             ok: true,
-            dbPosts
+            PostsReturn
         });
     } catch (error) {
         console.log(error);
