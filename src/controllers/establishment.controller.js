@@ -9,8 +9,10 @@ const createEstablishment = async(req, res = response) => {
 
     const { location, name, timeClose, timeOpen, type, image,geoposition,owner } = req.body;
 
+    let idEstablishment=Type.ObjectId();
     // Create establishment with model
     const newEstablishment= new Establishment({
+          _id: idEstablishment,
           location: location,
           name: name,
           timeClose: timeClose,
@@ -29,9 +31,13 @@ const createEstablishment = async(req, res = response) => {
         // Create DB establishment
         await newEstablishment.save();
 
+        var EstablishmentReturn = await Establishment.findById({_id: idEstablishment});
+
         // Generate response
         return res.status(201).json({
             ok: true,
+            dbEstablishment: EstablishmentReturn,
+
         });
 
      

@@ -39,7 +39,10 @@ const UserSchema = new Schema({
     eventSuscriber: [{
         type: ObjectId,
         ref: 'Event'
-    }]
+    }],
+    userImage: {
+        type: String,
+    }
 });
 
 module.exports = mongoose.model('User', UserSchema );

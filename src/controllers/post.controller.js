@@ -98,9 +98,27 @@ const obtainChannelPost=async(req, res = response) => {
             i++;
         }
 
+        var PostsReturn= Posts;
+
+        var UsuariosEncontrados= [];
+
+        Posts.forEach( post => {
+        UsuariosEncontrados.push(post.user);
+    } ); 
+
+    llamadasEsperar = [];
+    for(let i=0; i< UsuariosEncontrados.length;i++){
+        llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var UserFound = await llamadasEsperar[i];
+        PostsReturn[i].user= UserFound;
+    }
+
         //res.send(Posts);  
         return res.json({
-            Posts,
+            //Posts,
+            PostsReturn,
             dbChannels
         });
     }
@@ -149,9 +167,27 @@ const obtainChannelPostByTerm=async(req, res = response) => {
 
         }
 
+        var PostsReturn= Posts;
+
+        var UsuariosEncontrados= [];
+
+        Posts.forEach( post => {
+        UsuariosEncontrados.push(post.user);
+    } ); 
+
+    llamadasEsperar = [];
+    for(let i=0; i< UsuariosEncontrados.length;i++){
+        llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var UserFound = await llamadasEsperar[i];
+        PostsReturn[i].user= UserFound;
+    }
+
         //res.send(Posts);  
         return res.json({
-            Posts,
+            //Posts,
+            PostsReturn,
             dbChannels
         });
     }
