@@ -1,5 +1,6 @@
 const { response } = require('express');
 const Post = require('../models/Post');
+const TagPost = require('../models/TagPost');
 const Channel = require('../models/Channel');
 const mongoose = require('mongoose');
 const User = require('../models/User');
@@ -196,10 +197,30 @@ const getAllPosts = async(req, res = response) => {
     }
 }
 
+const getAllPostTags = async (req, res = response) => {
+    try {
+        // Read BD
+        const dbTagPost = await TagPost.find();
+
+        return res.status(200).json({
+            ok: true,
+            dbTagPost
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
 module.exports = {
     createPost,
     obtainPost,
     getAllPosts,
     obtainChannelPost,
-    obtainChannelPostByTerm
+    obtainChannelPostByTerm,
+    getAllPostTags
 }
