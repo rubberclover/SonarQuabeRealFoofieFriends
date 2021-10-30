@@ -81,8 +81,6 @@ const getChannelsByTerm = async(req, res = response) => {
         
         if(req.body.title!=null){
 
-            console.log(req.body.title);
-
             const inputTerm = req.body.title;
 
             if(dbChannels.length > 0) {

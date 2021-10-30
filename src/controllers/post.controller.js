@@ -103,10 +103,12 @@ const obtainChannelPost=async(req, res = response) => {
 
         var UsuariosEncontrados= [];
 
-        Posts.forEach( post => {
-        UsuariosEncontrados.push(post.user);
-    } ); 
-
+        if(Posts != null){
+            Posts.forEach( post => {
+                UsuariosEncontrados.push(post.user);
+            }); 
+        }
+        
     llamadasEsperar = [];
     for(let i=0; i< UsuariosEncontrados.length;i++){
         llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
