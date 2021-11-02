@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { obtainUser, getAllUsers, setPostFavorite,setEventFavorite} = require('../controllers/user.controller');
+const { obtainUser, getAllUsers,  setPostFavorite, setEstablishmentFavorite,obtainUserById,obtainUserEventsById} = require('../controllers/user.controller');
 const { validateFields } = require('../services/validate-params/validate-fields');
 const router = Router();
 
@@ -10,6 +10,10 @@ router.get('/getAllUsers', getAllUsers);
 
 router.post('/setPostFavorite', setPostFavorite);
 
-router.post('/setEventFavorite', setEventFavorite);
+router.post('/setEstablishmentFavorite', setEstablishmentFavorite);
+
+router.get('/obtainUserById/:id', obtainUserById);
+
+router.get('/obtainUserEventsById/:id', obtainUserEventsById);
 
 module.exports = router;

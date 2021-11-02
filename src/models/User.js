@@ -42,6 +42,17 @@ const UserSchema = new Schema({
     }],
     userImage: {
         type: String,
+    },
+    postFavorite:[{
+        type: ObjectId,
+        ref: 'Post'
+    }],
+    establishmentFavorite:[{
+        type: ObjectId,
+        ref: 'Establishment'
+    }],
+    description:{
+        type: String,
     }
 });
 
