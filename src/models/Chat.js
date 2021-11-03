@@ -14,17 +14,25 @@ const ChatSchema = new Schema({
         required: true
     },
     messages: [{
-        sender:{
-        type: ObjectId,
-        ref: 'User'
+        sender: {
+            type: ObjectId,
+            ref: 'User',
+            required: true
         },
-        receiver:{ 
-        type: ObjectId,
-        ref: 'User'
+        receiver: {
+            type: ObjectId,
+            ref: 'User',
+            required: true
         },
-        text:{
-        type:String
-    }
+        text: {
+            type: String
+        },
+        sendAt: {
+            type: Date,
+        },
+        viewed: {
+            type: Boolean,
+        }
     }]
 });
 
