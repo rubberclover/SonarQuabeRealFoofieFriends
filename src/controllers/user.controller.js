@@ -45,7 +45,7 @@ const obtainUser = async(req, res = response) => {
 const obtainUserById = async(req, res = response) => {
     const UserId= req.params.id;
     try{
-        var dbUser = await User.find({id:Type.ObjectId(UserId)});
+        var dbUser = await User.findById({_id:Type.ObjectId(UserId)});
         return res.json({
             dbUser
         });
