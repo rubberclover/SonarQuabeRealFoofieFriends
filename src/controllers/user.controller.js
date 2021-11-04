@@ -138,11 +138,49 @@ const getAllUsers = async(req, res = response) => {
     }
 }
 
+const getUserByTerm = async(req, res = response) => {
+    
+    try{ 
+        
+        var dbUsers = await User.find({},{_id:1,name:1,userImage:1});
+        var UsersToReturn=[];
+        // Read BD
+        
+        if(req.body.name!=null){
+
+            const inputTerm = req.body.name;
+
+            if(dbUsers.length > 0) {
+
+                dbUsers.forEach( user => {
+                    if( user.name.toLowerCase().includes(inputTerm.toLowerCase()) ) {
+                        UsersToReturn.push(user);
+                    }
+                } );
+            }
+
+        }
+
+        return res.json({
+            ok: true,
+            UsersToReturn
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
 module.exports = {
     obtainUser,
     getAllUsers,
     setPostFavorite,
     setEstablishmentFavorite,
     obtainUserById,
-    obtainUserEventsById
+    obtainUserEventsById,
+    getUserByTerm
 }
