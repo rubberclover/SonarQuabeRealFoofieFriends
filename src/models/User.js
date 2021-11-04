@@ -53,7 +53,11 @@ const UserSchema = new Schema({
     }],
     description:{
         type: String,
-    }
+    },
+    chat: [{
+        type: ObjectId,
+        ref: 'Chat'
+    }]
 });
 
 module.exports = mongoose.model('User', UserSchema );

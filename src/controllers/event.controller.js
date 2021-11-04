@@ -8,10 +8,9 @@ const today= new Date();
 const url = require('url');
 
 const createEvent = async(req, res = response) => {
-    var dd = String(today.getDate()+ 1).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    const todayDate = mm + '/' + dd + '/' + yyyy;
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var todayDate = date+' '+time;
 
     const { title, description, location, type, images, startDate, finishDate,userPublished } = req.body;
     

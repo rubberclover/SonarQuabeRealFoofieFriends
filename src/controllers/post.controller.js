@@ -10,10 +10,9 @@ const today= new Date();
 
 const createPost = async(req, res = response) => {
 
-    var dd = String(today.getDate()+ 1).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    const todayDate = mm + '/' + dd + '/' + yyyy;
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var todayDate = date+' '+time;
 
     const { title, content, tagPost, image, user, channel } = req.body;
     let idPost=Type.ObjectId();
