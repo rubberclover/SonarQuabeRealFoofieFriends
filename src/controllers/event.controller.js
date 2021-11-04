@@ -91,10 +91,27 @@ const getAllEvents = async(req, res = response) => {
     
     try{
         var dbEvents = await Event.find();
+
+    var EventsReturn= dbEvents;
+
+    var TagsEncontrados= [];
+
+    dbEvents.forEach( event => {
+        TagsEncontrados.push(event.type);
+    } ); 
+
+    llamadasEsperar = [];
+    for(let i=0; i< TagsEncontrados.length;i++){
+        llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var EventFound = await llamadasEsperar[i];
+        EventsReturn[i].type = EventFound;
+    }
     
         return res.json({
             ok: true,
-            dbEvents
+            EventsReturn
         });
     } catch (error) {
         console.log(error);
@@ -120,6 +137,23 @@ const getAllEventsFilter = async(req, res = response) => {
             k++;    
             }
             var TagFound= await Event.find({$or: TagsFound });
+            var EventsReturn= TagFound;
+
+        var TagsEncontrados= [];
+    
+        dbEvents.forEach( event => {
+            TagsEncontrados.push(event.type);
+        } ); 
+    
+        llamadasEsperar = [];
+        for(let i=0; i< TagsEncontrados.length;i++){
+            llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
+        }
+        for(let i=0; i< llamadasEsperar.length;i++){
+            var EventFound = await llamadasEsperar[i];
+            EventsReturn[i].type = EventFound;
+        }
+            
             return res.json({
                 TagFound
             });
@@ -130,10 +164,27 @@ const getAllEventsFilter = async(req, res = response) => {
         }
         // Read BD
         // Generate JWT
+
+        var EventsReturn= dbEvents;
+
+        var TagsEncontrados= [];
+    
+        dbEvents.forEach( event => {
+            TagsEncontrados.push(event.type);
+        } ); 
+    
+        llamadasEsperar = [];
+        for(let i=0; i< TagsEncontrados.length;i++){
+            llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
+        }
+        for(let i=0; i< llamadasEsperar.length;i++){
+            var EventFound = await llamadasEsperar[i];
+            EventsReturn[i].type = EventFound;
+        }
     
         return res.json({
             ok: true,
-            dbEvents
+            EventsReturn
         });
     } catch (error) {
         console.log(error);
@@ -146,9 +197,27 @@ const getAllEventsFilter = async(req, res = response) => {
 }
 
 const obtainEvent = async(req, res = response) => {
+    var dbEvents = await Event.findById({_id: req.params.id});
+    var EventsReturn= dbEvents;
 
-    Event.findById({_id: req.params.id}).then(function(event){
-        res.send(event);
+    var TagsEncontrados= [];
+
+    dbEvents.forEach( event => {
+        TagsEncontrados.push(event.type);
+    } ); 
+
+    llamadasEsperar = [];
+    for(let i=0; i< TagsEncontrados.length;i++){
+        llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var EventFound = await llamadasEsperar[i];
+        EventsReturn[i].type = EventFound;
+    }
+
+    return res.json({
+        ok: true,
+        EventsReturn
     });
 
 };
@@ -156,9 +225,47 @@ const obtainEvent = async(req, res = response) => {
 const obtainUserEvent = async(req, res = response) => {
 
     const UserEvents = await User.findById({_id: Type.ObjectId(req.params.id)});
-    Event.find({_id: UserEvents.eventSuscriber}).then(function(event){
+    const EventSuscribe = await Event.find({_id: UserEvents.eventSuscriber});
+
+    var TagsEncontrados= [];
+
+    EventSuscribe.forEach( event => {
+        TagsEncontrados.push(event.type);
+    } ); 
+
+    llamadasEsperar = [];
+    for(let i=0; i< TagsEncontrados.length;i++){
+        llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var EventFound = await llamadasEsperar[i];
+        EventSuscribe[i].type = EventFound;
+    }
+    const EventPublish = await Event.find({_id: UserEvents.eventPublished});
+
+    var TagsEncontrados= [];
+
+    EventPublish.forEach( event => {
+        TagsEncontrados.push(event.type);
+    } ); 
+
+    llamadasEsperar = [];
+    for(let i=0; i< TagsEncontrados.length;i++){
+        llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var EventFound = await llamadasEsperar[i];
+        EventPublish[i].type = EventFound;
+    }
+    return res.json({
+        ok: true,
+        EventPublish,
+        EventSuscribe
+    });
+
+   /* Event.find({_id: UserEvents.eventSuscriber}).then(function(event){
        res.send(event);
-   });
+   });*/
 
 };
 

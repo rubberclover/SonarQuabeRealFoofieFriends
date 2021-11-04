@@ -18,10 +18,10 @@ const EventSchema = new Schema({
         type: String,
         required: true
     },
-    type: [{
+    type: {
         type: ObjectId,
         ref: 'TagEvent'
-    }],
+    },
     images: [{
         type: String
     }],
