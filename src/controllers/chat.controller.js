@@ -123,6 +123,24 @@ const viewMessages = async(req, res = response) => {
             { $set: { "messages.$.viewed" : true } });
     }
 
+    var ChatReturned = await Chat.findById({_id: req.params.id},{messages:1});
+
+    return res.json({
+        ChatReturned
+    });
+
+};
+
+const viewAMessage = async(req, res = response) => {
+
+        await Chat.updateOne(
+            {
+              _id: req.body.id,
+              messages: {  $elemMatch:{_id: req.body.idMessage} }
+            },
+            { $set: { "messages.$.viewed" : true } });
+    
+
     return res.json({
         ok: true
     });
@@ -145,5 +163,6 @@ module.exports = {
     getAllUserChats,
     obtainChat,
     sendMessage,
-    viewMessages
+    viewMessages,
+    viewAMessage
 }

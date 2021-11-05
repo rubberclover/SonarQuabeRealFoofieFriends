@@ -197,21 +197,20 @@ const getAllEventsFilter = async(req, res = response) => {
 
 const obtainEvent = async(req, res = response) => {
     var dbEvents = await Event.findById({_id: req.params.id});
+    
     var EventsReturn= dbEvents;
 
     var TagsEncontrados= [];
 
-    dbEvents.forEach( event => {
-        TagsEncontrados.push(event.type);
-    } ); 
+    TagsEncontrados.push(EventsReturn.type);
 
     llamadasEsperar = [];
-    for(let i=0; i< TagsEncontrados.length;i++){
-        llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
-    }
+    
+        llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados})); 
+
     for(let i=0; i< llamadasEsperar.length;i++){
         var EventFound = await llamadasEsperar[i];
-        EventsReturn[i].type = EventFound;
+        EventsReturn.type = EventFound;
     }
 
     return res.json({
