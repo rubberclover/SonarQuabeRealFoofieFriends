@@ -140,7 +140,7 @@ const getAllEventsFilter = async(req, res = response) => {
 
         var TagsEncontrados= [];
     
-        dbEvents.forEach( event => {
+        EventsReturn.forEach( event => {
             TagsEncontrados.push(event.type);
         } ); 
     
