@@ -106,29 +106,6 @@ const obtainUserEventsSubscribedById = async(req, res = response) => {
         }    
 };
 
-const obtainUserEstablishmentsFavById = async(req, res = response) => {
-    const UserId= req.params.id;
-    try{
-    var dbUser = await User.findById({_id: Type.ObjectId(UserId)});
-    var EstablishmentFound=[];
-    
-    for(let i=0; i< dbUser.establishmentFavorite.length;i++){
-        EstablishmentFound.push( await Establishment.findById({_id: Type.ObjectId(dbUser.establishmentFavorite[i])})); 
-    }
-        return res.json({
-            EstablishmentFound
-        });
-        }
-        catch (error) {
-            console.log(error);
-        
-            return res.status(500).json({
-                ok: false,
-                msg: 'Talk with the administrator'
-            });
-        }    
-};
-
 const obtainUserPostsById = async(req, res = response) => {
     const UserId= req.params.id;
     try{
@@ -137,29 +114,6 @@ const obtainUserPostsById = async(req, res = response) => {
     
     for(let i=0; i< dbUser.post.length;i++){
         PostsFound.push( await Post.findById({_id: Type.ObjectId(dbUser.post[i])})); 
-    }
-        return res.json({
-            PostsFound
-        });
-        }
-        catch (error) {
-            console.log(error);
-        
-            return res.status(500).json({
-                ok: false,
-                msg: 'Talk with the administrator'
-            });
-        }    
-};
-
-const obtainUserPostsFavById = async(req, res = response) => {
-    const UserId= req.params.id;
-    try{
-    var dbUser = await User.findById({_id: Type.ObjectId(UserId)});
-    var PostsFound=[];
-    
-    for(let i=0; i< dbUser.postFavorite.length;i++){
-        PostsFound.push( await Post.findById({_id: Type.ObjectId(dbUser.postFavorite[i])})); 
     }
         return res.json({
             PostsFound
@@ -322,14 +276,9 @@ module.exports = {
     setEstablishmentFavorite,
     obtainUserById,
     obtainUserEventsById,
-
     obtainUserEventsSubscribedById,
-    obtainUserEstablishmentsFavById,
+    getAllUserFavEstablishment,
     obtainUserPostsById,
-    obtainUserPostsFavById,
-
-    getUserByTerm,
     getAllUserFavPost,
-    getAllUserFavEstablishment
-
+    getUserByTerm
 }
