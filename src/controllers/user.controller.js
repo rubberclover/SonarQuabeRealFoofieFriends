@@ -327,7 +327,6 @@ module.exports = {
     obtainUserEstablishmentsFavById,
     obtainUserPostsById,
     obtainUserPostsFavById,
-    getUserByTerm
 
     getUserByTerm,
     getAllUserFavPost,
