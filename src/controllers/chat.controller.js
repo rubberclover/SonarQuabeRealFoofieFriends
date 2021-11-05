@@ -159,10 +159,42 @@ const obtainChat = async(req, res = response) => {
 
 };
 
+const obtainChatOtherUser = async(req, res = response) => {
+
+    const dbUser= await User.findById({_id: req.params.id});
+
+    const dbChats= await Chat.find({_id: dbUser.chat})
+
+    var Usuarios;
+
+    var Mensajes;
+
+    var ObjectReturn =[];
+
+    for(let i=0;i<dbChats.length;i++){
+        if(dbChats[i].user1==dbUser._id){
+            var Usuario1 = await User.findById({_id: dbChats[i].user1});
+            Usuarios=Usuario1.name;}
+        else{var Usuario2 = await User.findById({_id: dbChats[i].user2});
+        Usuarios= Usuario2.name;}
+        Mensajes=dbChats[i].messages[dbChats[i].messages.length-1];
+        var UserAndMessage= {name:Usuarios, message :Mensajes};
+        ObjectReturn.push(UserAndMessage);
+        
+    }
+   
+    return res.json({
+        ok: true,
+        ObjectReturn
+    });
+
+};
+
 module.exports = {
     getAllUserChats,
     obtainChat,
     sendMessage,
     viewMessages,
-    viewAMessage
+    viewAMessage,
+    obtainChatOtherUser
 }
