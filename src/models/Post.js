@@ -23,7 +23,10 @@ const PostSchema = new Schema({
         type: ObjectId,
         ref: 'User',
         required: true
-
+    },
+    channel: {
+        type: ObjectId,
+        ref: 'Channel'
     },
     image: [{
         type: String
