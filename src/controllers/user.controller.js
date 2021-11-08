@@ -269,6 +269,29 @@ const getAllUserFavEstablishment = async(req, res = response) => {
     }
 }
 
+const userHasThisPostFav = async(req, res = response) => {
+    
+    const UserId= req.body.UserId;
+    const PostId= req.body.PostId;
+    try{
+    var dbUser = await User.find({_id: Type.ObjectId(UserId), postFavorite: Type.ObjectId(PostId)});
+    var Founded=false;
+    if(dbUser.length>0){
+    Founded=true;
+    }
+        return res.json({
+            Founded
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
 module.exports = {
     obtainUser,
     getAllUsers,
@@ -280,5 +303,6 @@ module.exports = {
     getAllUserFavEstablishment,
     obtainUserPostsById,
     getAllUserFavPost,
-    getUserByTerm
+    getUserByTerm,
+    userHasThisPostFav
 }

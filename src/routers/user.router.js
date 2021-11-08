@@ -1,12 +1,15 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { obtainUser, getAllUsers, setPostFavorite, setEstablishmentFavorite, obtainUserById, obtainUserEventsById, obtainUserEventsSubscribedById, obtainUserPostsById, getUserByTerm, getAllUserFavPost, getAllUserFavEstablishment} = require('../controllers/user.controller');
+const { obtainUser, getAllUsers, setPostFavorite, setEstablishmentFavorite, obtainUserById, obtainUserEventsById, obtainUserEventsSubscribedById, obtainUserPostsById, getUserByTerm, getAllUserFavPost, 
+    getAllUserFavEstablishment, userHasThisPostFav} = require('../controllers/user.controller');
 
 const { validateFields } = require('../services/validate-params/validate-fields');
 const router = Router();
 
 router.post('/obtainUser', obtainUser);
+
+router.get('/userHasThisPostFav', userHasThisPostFav);
 
 router.get('/getAllUsers', getAllUsers);
 
