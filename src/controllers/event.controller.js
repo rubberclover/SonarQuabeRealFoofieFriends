@@ -6,11 +6,11 @@ const mongoose = require('mongoose');
 const Type = mongoose.Types;
 const today= new Date();
 const url = require('url');
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+var todayDate = date+' '+time;
 
 const createEvent = async(req, res = response) => {
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var todayDate = date+' '+time;
 
     const { title, description, location, type, images, startDate, finishDate,userPublished } = req.body;
     
@@ -122,6 +122,42 @@ const getAllEvents = async(req, res = response) => {
     }
 }
 
+const getAllEventsFromNow = async(req, res = response) => {
+    
+    try{
+        var dbEvents = await Event.find({finishDate:{$gte: todayDate}});
+
+    var EventsReturn= dbEvents;
+
+    var TagsEncontrados= [];
+
+    dbEvents.forEach( event => {
+        TagsEncontrados.push(event.type);
+    } ); 
+
+    llamadasEsperar = [];
+    for(let i=0; i< TagsEncontrados.length;i++){
+        llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var EventFound = await llamadasEsperar[i];
+        EventsReturn[i].type = EventFound;
+    }
+    
+        return res.json({
+            ok: true,
+            EventsReturn
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
 const getAllEventsFilter = async(req, res = response) => {
     var q = url.parse(req.url, true);
     let FindById=q.search;
@@ -154,7 +190,8 @@ const getAllEventsFilter = async(req, res = response) => {
         }
             
             return res.json({
-                TagFound
+                ok: true,
+                EventsReturn
             });
         }
         
@@ -261,19 +298,8 @@ const obtainUserEvent = async(req, res = response) => {
         EventSuscribe
     });
 
-   /* Event.find({_id: UserEvents.eventSuscriber}).then(function(event){
-       res.send(event);
-   });*/
-
 };
 
-/*const obtainUserEvent = async(req, res = response) => {
-
-    Event.find({userSuscriber: req.params.id}).then(function(event){
-        res.send(event);
-    });
-
-};*/
 
 const getAllEventTags = async (req, res = response) => {
     try {
@@ -294,6 +320,79 @@ const getAllEventTags = async (req, res = response) => {
     }
 }
 
+const getAllEventsFilterFromNow = async(req, res = response) => {
+    var q = url.parse(req.url, true);
+    let FindById=q.search;
+    
+    try{
+        if(FindById!=null){
+            let TagsBody=FindById.substring(1).split("&");
+            const TagsFound = [];
+            let k=0;
+            while(k< TagsBody.length){
+            TagsFound.push({"type":Type.ObjectId(TagsBody[k])})
+            k++;    
+            }
+            var TagFound= await Event.find({$or: TagsFound, finishDate:{$gte: todayDate}});
+            var EventsReturn= TagFound;
+
+        var TagsEncontrados= [];
+    
+        EventsReturn.forEach( event => {
+            TagsEncontrados.push(event.type);
+        } ); 
+    
+        llamadasEsperar = [];
+        for(let i=0; i< TagsEncontrados.length;i++){
+            llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
+        }
+        for(let i=0; i< llamadasEsperar.length;i++){
+            var EventFound = await llamadasEsperar[i];
+            EventsReturn[i].type = EventFound;
+        }
+            
+            return res.json({
+                ok: true,
+                EventsReturn
+            });
+        }
+        
+        else{
+        var dbEvents = await Event.find({finishDate:{$gte: todayDate}});
+        }
+        // Read BD
+        // Generate JWT
+
+        var EventsReturn= dbEvents;
+
+        var TagsEncontrados= [];
+    
+        dbEvents.forEach( event => {
+            TagsEncontrados.push(event.type);
+        } ); 
+    
+        llamadasEsperar = [];
+        for(let i=0; i< TagsEncontrados.length;i++){
+            llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
+        }
+        for(let i=0; i< llamadasEsperar.length;i++){
+            var EventFound = await llamadasEsperar[i];
+            EventsReturn[i].type = EventFound;
+        }
+    
+        return res.json({
+            ok: true,
+            EventsReturn
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
 
 
 module.exports = {
@@ -304,5 +403,7 @@ module.exports = {
     obtainUserEvent,
     unsuscribeEvent,
     getAllEventTags,
-    getAllEventsFilter
+    getAllEventsFilter,
+    getAllEventsFromNow,
+    getAllEventsFilterFromNow
 }
