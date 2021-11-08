@@ -185,16 +185,15 @@ const getAllUsers = async(req, res = response) => {
 }
 
 const getUserByTerm = async(req, res = response) => {
-    
     try{ 
         
         var dbUsers = await User.find({},{_id:1,name:1,userImage:1});
         var UsersToReturn=[];
         // Read BD
         
-        if(req.body.name!=null){
+        if(req.params.term!=null){
 
-            const inputTerm = req.body.name;
+            const inputTerm = req.params.term;
 
             if(dbUsers.length > 0) {
 
