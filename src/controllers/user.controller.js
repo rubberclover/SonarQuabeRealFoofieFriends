@@ -152,16 +152,18 @@ const setEstablishmentFavorite = async(req, res = response) => {
     const UserId = req.body.user;
     const UserFavEvent = req.body.establishmentFavorite;
     var UserUpdated=[];
+    var newValue= false;
     var UserFavFounded=await User.find({$and:[{_id: Type.ObjectId(UserId)},{establishmentFavorite: Type.ObjectId(UserFavEvent)}]});
     if(UserFavFounded.length>0){
         UserUpdated = await User.findByIdAndUpdate({_id: Type.ObjectId(UserId)},{$pull:{establishmentFavorite: Type.ObjectId(UserFavEvent)}});
     }
     else{
-        UserUpdated = await User.findByIdAndUpdate({_id: Type.ObjectId(UserId)},{$push:{establishmentFavorite: Type.ObjectId(UserFavEvent)}})
+        UserUpdated = await User.findByIdAndUpdate({_id: Type.ObjectId(UserId)},{$push:{establishmentFavorite: Type.ObjectId(UserFavEvent)}});
+        newValue = true;
     }
 
     return res.json({
-       UserUpdated
+       newValue
     });
 }
 
