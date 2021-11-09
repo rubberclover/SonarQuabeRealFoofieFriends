@@ -51,6 +51,10 @@ const UserSchema = new Schema({
         type: ObjectId,
         ref: 'Establishment'
     }],
+    chat:[{
+        type: ObjectId,
+        ref: 'Chat'
+    }],
     description:{
         type: String,
     },
