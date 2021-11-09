@@ -9,7 +9,7 @@ const router = Router();
 
 router.post('/obtainUser', obtainUser);
 
-router.get('/userHasThisPostFav', userHasThisPostFav);
+router.post('/userHasThisPostFav', userHasThisPostFav);
 
 router.get('/getAllUsers', getAllUsers);
 
