@@ -110,7 +110,7 @@ const getAllEvents = async(req, res = response) => {
     
         return res.json({
             ok: true,
-            EventsReturn
+            events: EventsReturn
         });
     } catch (error) {
         console.log(error);
@@ -146,7 +146,7 @@ const getAllEventsFromNow = async(req, res = response) => {
     
         return res.json({
             ok: true,
-            EventsReturn
+            events: EventsReturn
         });
     } catch (error) {
         console.log(error);
@@ -168,30 +168,30 @@ const getAllEventsFilter = async(req, res = response) => {
             const TagsFound = [];
             let k=0;
             while(k< TagsBody.length){
-            TagsFound.push({"type":Type.ObjectId(TagsBody[k])})
-            k++;    
+                TagsFound.push({"type":Type.ObjectId(TagsBody[k])})
+                k++;    
             }
             var TagFound= await Event.find({$or: TagsFound });
             var EventsReturn= TagFound;
 
-        var TagsEncontrados= [];
-    
-        EventsReturn.forEach( event => {
-            TagsEncontrados.push(event.type);
-        } ); 
-    
-        llamadasEsperar = [];
-        for(let i=0; i< TagsEncontrados.length;i++){
-            llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
-        }
-        for(let i=0; i< llamadasEsperar.length;i++){
-            var EventFound = await llamadasEsperar[i];
-            EventsReturn[i].type = EventFound;
-        }
+            var TagsEncontrados= [];
+        
+            EventsReturn.forEach( event => {
+                TagsEncontrados.push(event.type);
+            } ); 
+        
+            llamadasEsperar = [];
+            for(let i=0; i< TagsEncontrados.length;i++){
+                llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
+            }
+            for(let i=0; i< llamadasEsperar.length;i++){
+                var EventFound = await llamadasEsperar[i];
+                EventsReturn[i].type = EventFound;
+            }
             
             return res.json({
                 ok: true,
-                EventsReturn
+                events: EventsReturn
             });
         }
         
@@ -353,7 +353,7 @@ const getAllEventsFilterFromNow = async(req, res = response) => {
             
             return res.json({
                 ok: true,
-                EventsReturn
+                events: EventsReturn
             });
         }
         

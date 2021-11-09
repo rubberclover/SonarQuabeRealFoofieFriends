@@ -36,6 +36,7 @@ io.on('connection', function(socket){
         connections[data] = socket;
         console.log(Object.keys(connections).length);
         socket.emit('connection-event', Object.keys(connections).length);
+        socket.broadcast.emit('connection-event', Object.keys(connections).length);
     })
     socket.on('disconnect', () =>{;
 
@@ -45,6 +46,7 @@ io.on('connection', function(socket){
             }
         }
         console.log(Object.keys(connections).length);
+        socket.broadcast.emit('connection-event', Object.keys(connections).length);
     })
 })
 
