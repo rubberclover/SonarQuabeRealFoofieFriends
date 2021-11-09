@@ -29,6 +29,6 @@ router.get('/getAllUserFavPost/:id', getAllUserFavPost);
 
 router.get('/getAllUserFavEstablishment/:id', getAllUserFavEstablishment);
 
-router.get('/getUserByTerm', getUserByTerm);
+router.get('/getUserByTerm/:term', getUserByTerm);
 
 module.exports = router;
