@@ -5,6 +5,7 @@ const Post = require('../models/Post');
 const Establishment = require('../models/Establishment');
 const Event = require('../models/Event');
 const Type = mongoose.Types;
+const url = require('url');
 
 const obtainUser = async(req, res = response) => {
 
@@ -295,6 +296,66 @@ const userHasThisPostFav = async(req, res = response) => {
     }
 }
 
+const userHasThisEstablishmentFav = async(req, res = response) => {
+    
+    const UserId= req.body.UserId;
+    const PostId= req.body.EstablishmentId;
+    try{
+    var dbUser = await User.find({_id: Type.ObjectId(UserId), establishmentFavorite: Type.ObjectId(PostId)});
+    var Founded=false;
+    if(dbUser.length>0){
+    Founded=true;
+    }
+        return res.json({
+            Founded
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
+const followUser = async(req, res = response) => {
+ 
+    const UserId = req.body.activeUserId;
+    const UserToFollow = req.body.profileUserId;
+    var UserUpdated=[];
+    var newValue= false;
+    var UserFollowFounded= await User.find({$and:[{_id: Type.ObjectId(UserId)},{following: Type.ObjectId(UserToFollow)}]});
+    if(UserFollowFounded.length>0){
+        UserUpdated = await User.findByIdAndUpdate({_id: Type.ObjectId(UserId)},{$pull:{following: Type.ObjectId(UserToFollow)}});
+    }
+    else{
+        UserUpdated = await User.findByIdAndUpdate({_id: Type.ObjectId(UserId)},{$push:{following: Type.ObjectId(UserToFollow)}});
+        newValue = true;
+    }
+
+    return res.json({
+        newValue
+    });
+}
+
+const isFollowingUser = async(req, res = response) => {
+    
+    var q = url.parse(req.url, true);
+    let FindById=q.search;
+    let UsersBody=FindById.substring(1).split("&");
+
+    var newValue= false;
+    var UserFollowFounded= await User.find({$and:[{_id: Type.ObjectId(UsersBody[0])},{following: Type.ObjectId(UsersBody[1])}]});
+    if(UserFollowFounded.length>0){
+        newValue = true;
+    }
+
+    return res.json({
+        newValue
+    });
+}
+
 module.exports = {
     obtainUser,
     getAllUsers,
@@ -307,5 +368,8 @@ module.exports = {
     obtainUserPostsById,
     getAllUserFavPost,
     getUserByTerm,
-    userHasThisPostFav
+    userHasThisPostFav,
+    userHasThisEstablishmentFav,
+    followUser,
+    isFollowingUser
 }

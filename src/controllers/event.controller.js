@@ -394,6 +394,23 @@ const getAllEventsFilterFromNow = async(req, res = response) => {
     }
 }
 
+/*async function addType(array){
+    var TagsEncontrados= [];
+    
+    EventsReturn.forEach( event => {
+        TagsEncontrados.push(event.type);
+    } ); 
+
+    llamadasEsperar = [];
+    for(let i=0; i< TagsEncontrados.length;i++){
+        llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var EventFound = await llamadasEsperar[i];
+        EventsReturn[i].type = EventFound;
+    }
+}*/
+
 
 module.exports = {
     createEvent,
