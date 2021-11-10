@@ -27,10 +27,13 @@ const ChatSchema = new Schema({
         text: {
             type: String
         },
-        sentAt: {
+        sendAt: {
             type: Date,
         },
-        viewed: {
+        viewedUser1: {
+            type: Boolean,
+        },
+        viewedUser2: {
             type: Boolean,
         }
     }]

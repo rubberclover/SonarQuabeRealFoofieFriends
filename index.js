@@ -30,13 +30,18 @@ var connections = {};
 
 io.on('connection', function(socket){
     socket.on('send-message', function(data){
-        socket.broadcast.emit('text-event', 'Hola ' + data.receiver + ' soy ' + data.sender);
+        //console.log(data);
+        if(connections[data.otherId]){
+            let response = {
+                text: data.message,
+                receiver: data.otherId,
+                sender: data.currentId
+            }
+            connections[data.otherId].emit("text-event", response);
+        }
     })
     socket.on('send-idConnection', function(data){
         connections[data] = socket;
-        console.log(Object.keys(connections).length);
-        socket.emit('connection-event', Object.keys(connections).length);
-        socket.broadcast.emit('connection-event', Object.keys(connections).length);
     })
     socket.on('disconnect', () =>{;
 
@@ -45,8 +50,7 @@ io.on('connection', function(socket){
                 delete connections[k];
             }
         }
-        console.log(Object.keys(connections).length);
-        socket.broadcast.emit('connection-event', Object.keys(connections).length);
+        //console.log(Object.keys(connections).length);
     })
 })
 
