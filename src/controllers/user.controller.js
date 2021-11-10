@@ -5,6 +5,7 @@ const Post = require('../models/Post');
 const Establishment = require('../models/Establishment');
 const Event = require('../models/Event');
 const Type = mongoose.Types;
+const url = require('url');
 
 const obtainUser = async(req, res = response) => {
 
@@ -339,11 +340,13 @@ const followUser = async(req, res = response) => {
 }
 
 const isFollowingUser = async(req, res = response) => {
- 
-    const UserId = req.params.activeUserId;
-    const UserToFollow = req.params.profileUserId;
+    
+    var q = url.parse(req.url, true);
+    let FindById=q.search;
+    let UsersBody=FindById.substring(1).split("&");
+
     var newValue= false;
-    var UserFollowFounded= await User.find({$and:[{_id: Type.ObjectId(UserId)},{following: Type.ObjectId(UserToFollow)}]});
+    var UserFollowFounded= await User.find({$and:[{_id: Type.ObjectId(UsersBody[0])},{following: Type.ObjectId(UsersBody[1])}]});
     if(UserFollowFounded.length>0){
         newValue = true;
     }
