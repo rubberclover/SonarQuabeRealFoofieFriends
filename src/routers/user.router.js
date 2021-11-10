@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { obtainUser, getAllUsers, setPostFavorite, setEstablishmentFavorite, obtainUserById, obtainUserEventsById, obtainUserEventsSubscribedById, obtainUserPostsById, getUserByTerm, getAllUserFavPost, 
-    getAllUserFavEstablishment, userHasThisPostFav, followUser, isFollowingUser} = require('../controllers/user.controller');
+    getAllUserFavEstablishment, userHasThisPostFav, userHasThisEstablishmentFav, followUser, isFollowingUser} = require('../controllers/user.controller');
 
 const { validateFields } = require('../services/validate-params/validate-fields');
 const router = Router();
@@ -11,11 +11,13 @@ router.post('/obtainUser', obtainUser);
 
 router.post('/userHasThisPostFav', userHasThisPostFav);
 
+router.post('/userHasThisEstablishmentFav', userHasThisEstablishmentFav);
+
 router.get('/getAllUsers', getAllUsers);
 
 router.post('/setPostFavorite', setPostFavorite);
 
-router.post('/isFollowingUser', isFollowingUser);
+router.get('/isFollowingUser', isFollowingUser);
 
 router.post('/followUser', followUser);
 
