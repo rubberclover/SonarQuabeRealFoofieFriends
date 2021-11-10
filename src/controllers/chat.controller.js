@@ -113,19 +113,33 @@ const viewMessages = async(req, res = response) => {
 
     const dbChat= await Chat.findById({_id: req.params.id});
 
-    for(let i=0; i< dbChat.messages.length;i++){
-        //var Prueba= await Chat.find({messages:{ $elemMatch:{_id: dbChat.messages[i]._id}}});
-        await Chat.updateOne(
-            {
-              _id: req.params.id,
-              messages: {  $elemMatch:{_id: dbChat.messages[i]._id} }
-            },
-            { $set: { "messages.$.viewed" : true } });
+    if(req.body.viewedUser == "viewedUser1"){
+        for(let i=0; i< dbChat.messages.length;i++){
+            //var Prueba= await Chat.find({messages:{ $elemMatch:{_id: dbChat.messages[i]._id}}});
+            await Chat.updateOne(
+                {
+                  _id: req.params.id,
+                  messages: {  $elemMatch:{_id: dbChat.messages[i]._id} }
+                },
+                { $set: { "messages.$.viewedUser1" : true } });
+        }
+    }
+    else{
+        for(let i=0; i< dbChat.messages.length;i++){
+            //var Prueba= await Chat.find({messages:{ $elemMatch:{_id: dbChat.messages[i]._id}}});
+            await Chat.updateOne(
+                {
+                  _id: req.params.id,
+                  messages: {  $elemMatch:{_id: dbChat.messages[i]._id} }
+                },
+                { $set: { "messages.$.viewedUser2" : true } });
+        }
     }
 
-    var ChatReturned = await Chat.findById({_id: req.params.id},{messages:1});
+    var ChatReturned = await Chat.findById({_id: req.params.id});
 
     return res.json({
+        ok: true,
         ChatReturned
     });
 
@@ -149,12 +163,12 @@ const viewAMessage = async(req, res = response) => {
 
 const obtainChat = async(req, res = response) => {
 
-    const dbChat= await Chat.findById({_id: req.params.id});
+    const ChatReturned = await Chat.findById({_id: req.params.id});
 
 
     return res.json({
         ok: true,
-        dbChat
+        ChatReturned
     });
 
 };
