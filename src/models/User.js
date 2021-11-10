@@ -61,6 +61,10 @@ const UserSchema = new Schema({
     chat: [{
         type: ObjectId,
         ref: 'Chat'
+    }],
+    following: [{
+        type: ObjectId,
+        ref: 'User'
     }]
 });
 

@@ -295,6 +295,26 @@ const userHasThisPostFav = async(req, res = response) => {
     }
 }
 
+const followUser = async(req, res = response) => {
+ 
+    const UserId = req.body.userId;
+    const UserToFollow = req.body.userToFollow;
+    var UserUpdated=[];
+    var newValue= false;
+    var UserFollowFounded= await User.find({$and:[{_id: Type.ObjectId(UserId)},{following: Type.ObjectId(UserToFollow)}]});
+    if(UserFollowFounded.length>0){
+        UserUpdated = await User.findByIdAndUpdate({_id: Type.ObjectId(UserId)},{$pull:{following: Type.ObjectId(UserToFollow)}});
+    }
+    else{
+        UserUpdated = await User.findByIdAndUpdate({_id: Type.ObjectId(UserId)},{$push:{following: Type.ObjectId(UserToFollow)}});
+        newValue = true;
+    }
+
+    return res.json({
+        newValue
+    });
+}
+
 module.exports = {
     obtainUser,
     getAllUsers,
@@ -307,5 +327,6 @@ module.exports = {
     obtainUserPostsById,
     getAllUserFavPost,
     getUserByTerm,
-    userHasThisPostFav
+    userHasThisPostFav,
+    followUser
 }
