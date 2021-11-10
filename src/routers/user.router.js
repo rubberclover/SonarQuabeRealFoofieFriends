@@ -19,7 +19,7 @@ router.post('/setPostFavorite', setPostFavorite);
 
 router.get('/isFollowingUser', isFollowingUser);
 
-router.post('/followUser', followUser);
+router.put('/followUser', followUser);
 
 router.post('/setEstablishmentFavorite', setEstablishmentFavorite);
 
