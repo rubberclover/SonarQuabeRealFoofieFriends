@@ -320,8 +320,8 @@ const userHasThisEstablishmentFav = async(req, res = response) => {
 
 const followUser = async(req, res = response) => {
  
-    const UserId = req.body.userId;
-    const UserToFollow = req.body.userToFollow;
+    const UserId = req.body.activeUserId;
+    const UserToFollow = req.body.profileUserId;
     var UserUpdated=[];
     var newValue= false;
     var UserFollowFounded= await User.find({$and:[{_id: Type.ObjectId(UserId)},{following: Type.ObjectId(UserToFollow)}]});
@@ -340,8 +340,8 @@ const followUser = async(req, res = response) => {
 
 const isFollowingUser = async(req, res = response) => {
  
-    const UserId = req.body.userId;
-    const UserToFollow = req.body.userToFollow;
+    const UserId = req.params.activeUserId;
+    const UserToFollow = req.params.profileUserId;
     var newValue= false;
     var UserFollowFounded= await User.find({$and:[{_id: Type.ObjectId(UserId)},{following: Type.ObjectId(UserToFollow)}]});
     if(UserFollowFounded.length>0){

@@ -17,7 +17,7 @@ router.get('/getAllUsers', getAllUsers);
 
 router.post('/setPostFavorite', setPostFavorite);
 
-router.get('/isFollowingUser', isFollowingUser);
+router.get('/isFollowingUser/:profileUserId&activeUserId', isFollowingUser);
 
 router.put('/followUser', followUser);
 
