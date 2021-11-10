@@ -27,7 +27,7 @@ const ChatSchema = new Schema({
         text: {
             type: String
         },
-        sentAt: {
+        sendAt: {
             type: Date,
         },
         viewedUser1: {

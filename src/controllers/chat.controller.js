@@ -7,58 +7,79 @@ const today= new Date();
 
 const sendMessage = async(req, res = response) => {
 
-    const { receiver, sender, text, id } = req.body;
+    const { receiver, sender, text, id, viewedUser } = req.body;
 
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var todayDate = date+' '+time;
-    
-    // Create establishment with model
-    var newChat= new Chat({
-          user1: Type.ObjectId(sender),
-          user2: Type.ObjectId(receiver),
-          messages:[{
-          sender: Type.ObjectId(sender),
-          receiver: Type.ObjectId(receiver),
-          text: text,
-          sendAt: todayDate,
-          viewed:false
-          }]
-    })
-    if(id==""){
-    try{
-    
-        // Create DB establishment
-        await newChat.save();
+    //console.log(todayDate)
 
-        // Generate response
-        return res.status(201).json({
-            ok: true
-        });
-
-     
-    } catch (error) {
-        console.log(error);
-
-        return res.status(500).json({
-            ok: false,
-            msg: 'Please, talk with administrator'
-        });
+    if(viewedUser == "viewedUser1"){
+        // Create Cat
+        var newChat= new Chat({
+            user1: Type.ObjectId(sender),
+            user2: Type.ObjectId(receiver),
+            messages:[{
+                sender: Type.ObjectId(sender),
+                receiver: Type.ObjectId(receiver),
+                text: text,
+                sendAt: todayDate,
+                viewedUser1:true,
+                viewedUser2:false
+            }]
+        })
     }
-  }
-  else{
-      console.log("gay")
-    try{
-        await Chat.findByIdAndUpdate({_id: Type.ObjectId(id)},{$push: {messages: newChat.messages[0]}})
+    else{
+        // Create Cat
+        var newChat= new Chat({
+            user1: Type.ObjectId(sender),
+            user2: Type.ObjectId(receiver),
+            messages:[{
+                sender: Type.ObjectId(sender),
+                receiver: Type.ObjectId(receiver),
+                text: text,
+                sendAt: todayDate,
+                viewedUser2:true,
+                viewedUser1:false
+            }]
+        })
+    }
+    
+    if(id==""){
+        try{
+                
+            await newChat.save();
+    
+            // Generate response
             return res.status(201).json({
-            ok: true
+                ok: true,
+                message: newChat.messages[0]
             });
-    } catch (error) {
-    console.log(error);
+    
+            
+        } catch (error) {
+            console.log(error);
+    
+            return res.status(500).json({
+                ok: false,
+                msg: 'Please, talk with administrator'
+            });
+        }
+    }
+    else{
+        //El chat ya existe
+        try{
+            await Chat.findByIdAndUpdate({_id: Type.ObjectId(id)},{$push: {messages: newChat.messages[0]}})
+                return res.status(201).json({
+                ok: true,
+                message: newChat.messages[0]
+            });
+        } catch (error) {
+            console.log(error);
 
             return res.status(500).json({
-            ok: false,
-            msg: 'Please, talk with administrator'
+                ok: false,
+                msg: 'Please, talk with administrator'
             });
         }   
     }
@@ -84,7 +105,7 @@ const getAllUserChats = async(req, res = response) => {
             ChatsReturn.push(ChatFound);
         }
 
-        const sortByDate = arr => {
+        /*const sortByDate = arr => {
             const sorter = (a, b) => {
                return new Date(b.sendAt).getTime() - new Date(a.sendAt).getTime();
             }
@@ -93,7 +114,7 @@ const getAllUserChats = async(req, res = response) => {
         
         ChatsReturn.forEach( chatE => {
             sortByDate(chatE.messages);
-        } );
+        } );*/
 
         return res.json({
             ok: true,
@@ -147,13 +168,22 @@ const viewMessages = async(req, res = response) => {
 
 const viewAMessage = async(req, res = response) => {
 
+    if(req.body.viewedUser == "viewedUser1"){
         await Chat.updateOne(
             {
               _id: req.body.id,
               messages: {  $elemMatch:{_id: req.body.idMessage} }
             },
-            { $set: { "messages.$.viewed" : true } });
-    
+            { $set: { "messages.$.viewedUser1" : true } });
+    }
+    else{
+        await Chat.updateOne(
+            {
+              _id: req.body.id,
+              messages: {  $elemMatch:{_id: req.body.idMessage} }
+            },
+            { $set: { "messages.$.viewedUser2" : true } });
+    }
 
     return res.json({
         ok: true
