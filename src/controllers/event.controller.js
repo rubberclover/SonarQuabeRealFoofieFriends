@@ -242,12 +242,16 @@ const obtainEvent = async(req, res = response) => {
     TagsEncontrados.push(EventsReturn.type);
 
     llamadasEsperar = [];
+    usuarioEvento = [];
     
         llamadasEsperar.push(TagEvent.findById({_id: TagsEncontrados})); 
+        usuarioEvento.push(User.findById({_id: EventsReturn.userPublished})); 
 
     for(let i=0; i< llamadasEsperar.length;i++){
         var EventFound = await llamadasEsperar[i];
+        var UserFound = await usuarioEvento[i];
         EventsReturn.type = EventFound;
+        EventsReturn.userPublished= UserFound;
     }
 
     return res.json({
