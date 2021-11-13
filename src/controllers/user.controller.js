@@ -335,12 +335,12 @@ const followUser = async(req, res = response) => {
     }
 
     return res.json({
-        newValue
+        "ok": true,
+        "follows": newValue
     });
 }
 
 const isFollowingUser = async(req, res = response) => {
-    
     var q = url.parse(req.url, true);
     let FindById=q.search;
     let UsersBody=FindById.substring(1).split("&");
@@ -352,7 +352,8 @@ const isFollowingUser = async(req, res = response) => {
     }
 
     return res.json({
-        newValue
+        "ok": true,
+        "follows": newValue
     });
 }
 
