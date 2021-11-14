@@ -45,15 +45,19 @@ const sendMessage = async(req, res = response) => {
         })
     }
     
-    if(id==""){
+    if(id=="new"){
         try{
-                
             await newChat.save();
+            //console.log(sender)
+            //console.log(receiver);
+            await User.findByIdAndUpdate({_id: Type.ObjectId(sender)},{$push: {chat: Type.ObjectId(newChat._id)}});
+            await User.findByIdAndUpdate({_id: Type.ObjectId(receiver)},{$push: {chat: Type.ObjectId(newChat._id)}});
+            //await Chat.findByIdAndUpdate({_id: Type.ObjectId(newChat._id)},{$push: {messages: newChat.messages[0]}});
     
             // Generate response
             return res.status(201).json({
                 ok: true,
-                message: newChat.messages[0]
+                message: newChat._id
             });
     
             
@@ -192,22 +196,25 @@ const viewAMessage = async(req, res = response) => {
 };
 
 const obtainChat = async(req, res = response) => {
+    let ChatReturned = null;
+        ChatReturned = await Chat.findById({_id: req.params.id});
+        if(ChatReturned != null)
+            return res.json({
+                ok: true,
+                ChatReturned
+            });
 
-    const ChatReturned = await Chat.findById({_id: req.params.id});
-
-
-    return res.json({
-        ok: true,
-        ChatReturned
-    });
-
+        return res.json({
+            ok: false,
+            ChatReturned: 'new'
+        });
 };
 
 const obtainChatOtherUser = async(req, res = response) => {
 
-    const dbUser= await User.findById({_id: req.params.id});
+    const dbUser= await User.findById(req.params.id);
 
-    const dbChats= await Chat.find({_id: dbUser.chat})
+    const dbChats= await Chat.find({_id: dbUser.chat});
 
     var Usuarios;
 
@@ -216,13 +223,18 @@ const obtainChatOtherUser = async(req, res = response) => {
     var ObjectReturn =[];
 
     for(let i=0;i<dbChats.length;i++){
-        if(dbChats[i].user1==dbUser._id){
-            var Usuario1 = await User.findById({_id: dbChats[i].user1});
-            Usuarios=Usuario1.name;}
-        else{var Usuario2 = await User.findById({_id: dbChats[i].user2});
-        Usuarios= Usuario2.name;}
-        Mensajes=dbChats[i].messages[dbChats[i].messages.length-1];
-        var UserAndMessage= {name:Usuarios, message :Mensajes};
+        let Usuario = '';
+        let idUser1 = "" + dbChats[i].user1;
+        let idUser = "" + dbUser._id;
+        if(idUser1 == idUser){
+            Usuario = await User.findById(dbChats[i].user2);
+            Usuarios=Usuario._id;}
+        else{
+            Usuario = await User.findById(dbChats[i].user1);
+            Usuarios= Usuario._id;
+        }
+        //Mensajes=dbChats[i].messages[dbChats[i].messages.length-1];
+        var UserAndMessage= {idUser:Usuarios, idChat:dbChats[i]._id};
         ObjectReturn.push(UserAndMessage);
         
     }
