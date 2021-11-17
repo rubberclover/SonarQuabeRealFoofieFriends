@@ -36,7 +36,8 @@ io.on('connection', function(socket){
                 text: data.message,
                 receiver: data.otherId,
                 sender: data.currentId,
-                isNew: data.isNew
+                isNew: data.isNew,
+                idChat: data.idChat
             }
             connections[data.otherId].emit("text-event", response);
         }
