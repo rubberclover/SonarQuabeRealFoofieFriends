@@ -38,11 +38,14 @@ const createEvent = async(req, res = response) => {
     try{
         // Create DB event
         let Event = await newEvent.save();
+        User.findByIdAndUpdate({_id: userPublished},{$push: {eventPublished: Event._id}}).then(function(){
 
-        // Generate response
-        return res.status(201).json({
-            ok: true,
-            eventId: Event._id
+            // Generate response
+            return res.status(201).json({
+                ok: true,
+                eventId: Event._id
+            });
+
         });
  
     } catch (error) {
@@ -56,34 +59,44 @@ const createEvent = async(req, res = response) => {
 }
 
 const suscribeEvent = async(req, res = response) => {
-        const UserSuscriber = req.body.userSuscriber;
-        User.findByIdAndUpdate({_id: UserSuscriber},{$push: {eventSuscriber: req.params.id}}).then(function(){
-        Event.findByIdAndUpdate({_id: req.params.id},{$push:req.body}).then(function(){
-        Event.findOne({_id: req.params.id}).then(function(event){
-            
-            return res.status(200).json({
-                ok: true,
-                eventId: event._id
-            });
-        });
-   
-    });
-        });
 
+    const { userSuscriber } = req.body;
+    User.findById({_id: userSuscriber}).then(function(user){
+        if(!user.eventSuscriber.includes(req.params.id)){
+            User.findByIdAndUpdate({_id: userSuscriber},{$push: {eventSuscriber: req.params.id}}).then(function(){
+                Event.findByIdAndUpdate({_id: req.params.id},{$push:req.body}).then(function(){
+                    Event.findOne({_id: req.params.id}).then(function(event){
+                            
+                        return res.status(200).json({
+                            ok: true,
+                            eventId: event._id
+                        });
+                    });
+        
+                });
+            });
+        }
+    });
+        
+    
 }
 
 const unsuscribeEvent = async(req, res = response) => {
-    const UserSuscriber = req.body.userSuscriber;
-    User.findByIdAndUpdate({_id: UserSuscriber},{$pull: {eventSuscriber: req.params.id}}).then(function(){
-    Event.findOneAndUpdate({_id: req.params.id}, {$pull: {userSuscriber: req.body.userSuscriber}}).then(function(){
-    Event.findOne({_id: req.params.id}).then(function(event){
-        res.send(event)
+
+    const { userSuscriber } = req.body;
+    User.findById({_id: userSuscriber}).then(function(user){
+        if(user.eventSuscriber.includes(req.params.id)){
+            User.findByIdAndUpdate({_id: userSuscriber},{$pull: {eventSuscriber: req.params.id}}).then(function(){
+                Event.findOneAndUpdate({_id: req.params.id}, {$pull: {userSuscriber: req.body.userSuscriber}}).then(function(){
+                    Event.findOne({_id: req.params.id}).then(function(event){
+                        res.send(event)
+                    });
+
+                });
+
+            });
+        }
     });
-
-});
-
-});
-
 }
 
 const getAllEvents = async(req, res = response) => {
