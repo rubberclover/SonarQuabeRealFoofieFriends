@@ -123,11 +123,36 @@ const revalidateToken = async(req, res = response ) => {
 
 }
 
+const checkEmail = async(req, res = response) => {
+
+    try{
+    var EmailToFind= req.params.email;
+    var Results= [];
+    const dbUser = await User.find({email: EmailToFind});
+    if(dbUser.length>0){
+        Results = dbUser;
+    }
+    return res.json({
+        User: Results
+    });
+} catch (error) {
+    console.log(error);
+    return res.status(500).json({
+        ok: false,
+        msg: 'Please, talk with administrator'
+    });
+}
+
+}
+
+    
+
 
 
 
 module.exports = {
     createUser,
     loginUser,
-    revalidateToken
+    revalidateToken,
+    checkEmail
 }
