@@ -7,7 +7,7 @@ const { generateJWT } = require('../services/helpers/auth.helper/jwt');
 
 const createUser = async(req, res = response) => {
 
-    const { email, name, password, image } = req.body;
+    const { email, name, password, image, username} = req.body;
 
     if(image=="" || image == undefined){
         req.body.image="https://res.cloudinary.com/rffsmedia/image/upload/v1635521972/UserImage/585e4beacb11b227491c3399_pmwbkw.png"}
@@ -19,6 +19,15 @@ const createUser = async(req, res = response) => {
             return res.status(400).json({
                 ok: false,
                 msg: 'A user with this email already exists'
+            });
+        }
+
+        const nameuser = await User.findOne({ username });
+
+        if ( nameuser ) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'A user with this username already exists'
             });
         }
 
@@ -123,11 +132,36 @@ const revalidateToken = async(req, res = response ) => {
 
 }
 
+const checkEmail = async(req, res = response) => {
+
+    try{
+    var EmailToFind= req.params.email;
+    var Results= [];
+    const dbUser = await User.find({email: EmailToFind});
+    if(dbUser.length>0){
+        Results = dbUser;
+    }
+    return res.json({
+        User: Results
+    });
+} catch (error) {
+    console.log(error);
+    return res.status(500).json({
+        ok: false,
+        msg: 'Please, talk with administrator'
+    });
+}
+
+}
+
+    
+
 
 
 
 module.exports = {
     createUser,
     loginUser,
-    revalidateToken
+    revalidateToken,
+    checkEmail
 }
