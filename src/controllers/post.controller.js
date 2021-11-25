@@ -25,7 +25,9 @@ const createPost = async(req, res = response) => {
           creationDate: todayDate,
           tagPost: Type.ObjectId(tagPost),
           image: image,
-          user: user
+          user: user,
+          likes: [],
+          comments:[]
     })
 
     try{
@@ -303,11 +305,78 @@ const getAllPostTags = async (req, res = response) => {
     }
 }
 
+const likePost = async (req, res = response) => {
+    const UserId = req.body.User;
+    const PostToLike = req.body.Post;
+    var PostUpdated=[];
+    var newValue= false;
+    var PostFounded=await Post.find({$and:[{_id: Type.ObjectId(PostToLike)},{likes: Type.ObjectId(UserId)}]});
+    if(PostFounded.length>0){
+        PostUpdated = await Post.findByIdAndUpdate({_id: Type.ObjectId(PostToLike)},{$pull:{likes: Type.ObjectId(UserId)}});
+    }
+    else{
+        PostUpdated = await Post.findByIdAndUpdate({_id: Type.ObjectId(PostToLike)},{$push:{likes: Type.ObjectId(UserId)}});
+        newValue = true;
+    }
+
+    return res.json({
+       newValue
+    });
+}
+
+const getLikesPost = async (req, res = response) => {
+    const PostToLike = req.params.id;
+    var PostFounded=await Post.find({_id: Type.ObjectId(PostToLike)},{likes:1});
+    var LikesTotal= PostFounded.length;
+
+    return res.json({
+       of:true,
+       Likes: LikesTotal
+    });
+}
+
+const createComment = async (req, res = response) =>{
+
+    const { idPost,idUser, text} = req.body;
+
+    const newPost= new Post({
+        _id: idPost,
+        title: "",
+        content: "",
+        creationDate: "",
+        image: "",
+        likes: [],
+        comments:[{
+            _id: idUser,
+            comment: text
+        }
+        ]
+  })
+
+  try{
+    await Post.findByIdAndUpdate({_id: Type.ObjectId(idPost)},{$push: {comments: newPost.comments[0]}})
+        return res.status(201).json({
+        ok: true,
+        comment: newPost.comments[0]
+    });
+} catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+        ok: false,
+        msg: 'Please, talk with administrator'
+    });
+}
+}
+
 module.exports = {
     createPost,
     obtainPost,
     getAllPosts,
     obtainChannelPost,
     obtainChannelPostByTerm,
-    getAllPostTags
+    getAllPostTags,
+    likePost,
+    getLikesPost,
+    createComment
 }
