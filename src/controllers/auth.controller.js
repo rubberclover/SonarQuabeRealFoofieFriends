@@ -154,7 +154,29 @@ const checkEmail = async(req, res = response) => {
 
 }
 
-    
+const checkUserName = async(req, res = response) => {
+
+    try{
+    var UsernameToFind= req.params.username;
+    var Results= [];
+    const dbUser = await User.find({username: UsernameToFind});
+    if(dbUser.length>0){
+        Results = dbUser;
+    }
+    return res.json({
+        User: Results
+    });
+} catch (error) {
+    console.log(error);
+    return res.status(500).json({
+        ok: false,
+        msg: 'Please, talk with administrator'
+    });
+}
+
+}
+
+   
 
 
 
@@ -163,5 +185,6 @@ module.exports = {
     createUser,
     loginUser,
     revalidateToken,
-    checkEmail
+    checkEmail,
+    checkUserName
 }
