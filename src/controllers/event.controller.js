@@ -12,7 +12,10 @@ var todayDate = date+' '+time;
 
 const createEvent = async(req, res = response) => {
 
-    const { title, description, location, type, images, startDate, finishDate,userPublished } = req.body;
+    const { title, description, location, geoposition, type, images, startDate, finishDate,userPublished } = req.body;
+
+    let latitudeGeo = geoposition.latitude;
+    let longitudeGeo = geoposition.longitude;
     
     // Create event with model
     const newEvent= new Event({
@@ -26,8 +29,8 @@ const createEvent = async(req, res = response) => {
           userPublished: userPublished,
           userSuscriber: [],
           geoposition: {
-             latitude: 0,
-             longitude:0
+             latitude: latitudeGeo,
+             longitude: longitudeGeo
           } ,
           images: [],
     })
