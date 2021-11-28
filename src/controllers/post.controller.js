@@ -356,7 +356,7 @@ const createComment = async (req, res = response) =>{
             _id: idComment,
             idUser: idUser,
             comment: text,
-            date: todayDate
+            creationDate: todayDate
         }
         ]
   })
