@@ -68,6 +68,7 @@ app.use( '/api/post', require('./src/routers/post.router') );
 app.use( '/api/channel', require('./src/routers/channel.router') );
 app.use( '/api/user', require('./src/routers/user.router') );
 app.use( '/api/chat', require('./src/routers/chat.router') );
+app.use( '/api/homeimage', require('./src/routers/homeimage.router') );
 
 /*app.listen( process.env.PORT, () => {
     console.log(`Server app in port ${ process.env.PORT }`);

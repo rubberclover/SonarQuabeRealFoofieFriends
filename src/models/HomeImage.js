@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const FotosHomeSchema = new Schema({
+const HomeImageSchema = new Schema({
     events: [{
         type: String
     }],
@@ -14,4 +14,4 @@ const FotosHomeSchema = new Schema({
     }]
 });
 
-module.exports = mongoose.model('FotosHome', FotosHomeSchema );
+module.exports = mongoose.model('HomeImage', HomeImageSchema);

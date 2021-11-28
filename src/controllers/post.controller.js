@@ -413,6 +413,31 @@ const getLastPosts = async(req, res = response) => {
     }
 }
 
+const getPostComments = async(req, res = response) => {
+    
+    try{  
+        var postId= req.params.id;
+        var dbPosts = await Post.findById({_id:Type.ObjectId(postId)},{comments:1});
+        var Comentarios=dbPosts.comments;
+
+        for(let i=0;i<Comentarios.length;i++){
+        var dbUsers = await User.findById({_id:Type.ObjectId(postId)},{comments:1});
+        }
+    
+        return res.json({
+            ok: true,
+            Comments: dbUsers.comments
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
 module.exports = {
     createPost,
     obtainPost,
@@ -423,5 +448,6 @@ module.exports = {
     likePost,
     getLikesPost,
     createComment,
-    getLastPosts
+    getLastPosts,
+    getPostComments
 }
