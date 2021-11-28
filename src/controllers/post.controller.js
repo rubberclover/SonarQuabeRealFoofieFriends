@@ -419,14 +419,14 @@ const getPostComments = async(req, res = response) => {
         var postId= req.params.id;
         var dbPosts = await Post.findById({_id:Type.ObjectId(postId)},{comments:1});
         var Comentarios=dbPosts.comments;
-
+        var Resultado= [];
         for(let i=0;i<Comentarios.length;i++){
-        var dbUsers = await User.findById({_id:Type.ObjectId(postId)},{comments:1});
+        var dbUsers = await User.findById({_id: Type.ObjectId(Comentarios[i].idUser)},{username:1,userImage:1});
+        Resultado.push({"_id": Comentarios[i]._id, "comment": Comentarios[i].comment, "creationDate": Comentarios[i].creationDate,"idUser": Comentarios[i].idUser,"username":dbUsers.username,"userImage":dbUsers.userImage});
         }
-    
         return res.json({
             ok: true,
-            Comments: dbUsers.comments
+            Comments: Resultado
         });
     } catch (error) {
         console.log(error);
