@@ -337,6 +337,12 @@ const getLikesPost = async (req, res = response) => {
 
 const createComment = async (req, res = response) =>{
 
+    let idComment=Type.ObjectId();
+
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var todayDate = date+' '+time;
+
     const { idPost,idUser, text} = req.body;
 
     const newPost= new Post({
@@ -347,8 +353,10 @@ const createComment = async (req, res = response) =>{
         image: "",
         likes: [],
         comments:[{
-            _id: idUser,
-            comment: text
+            _id: idComment,
+            idUser: idUser,
+            comment: text,
+            date: todayDate
         }
         ]
   })
@@ -369,6 +377,42 @@ const createComment = async (req, res = response) =>{
 }
 }
 
+const getLastPosts = async(req, res = response) => {
+    
+    try{
+    var dbPosts = await Post.find().sort({_id:-1}).limit(5);
+
+    var PostsReturn= dbPosts;
+
+    var UsuariosEncontrados= [];
+
+    dbPosts.forEach( post => {
+        UsuariosEncontrados.push(post.user);
+    } ); 
+
+    llamadasEsperar = [];
+    for(let i=0; i< UsuariosEncontrados.length;i++){
+        llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var UserFound = await llamadasEsperar[i];
+        PostsReturn[i].user= UserFound;
+    }
+    
+        return res.json({
+            ok: true,
+            PostsReturn
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
 module.exports = {
     createPost,
     obtainPost,
@@ -378,5 +422,6 @@ module.exports = {
     getAllPostTags,
     likePost,
     getLikesPost,
-    createComment
+    createComment,
+    getLastPosts
 }

@@ -37,12 +37,18 @@ const PostSchema = new Schema({
     }],
     comments: [{
         _id: {
+            type: ObjectId
+        },
+        idUser: {
             type: ObjectId,
             ref: 'User'
         },
         comment: {
             type: String
-                }
+                },
+        creationDate: {
+            type: Date           
+        }
     }]
 
 });
