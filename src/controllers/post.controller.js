@@ -327,10 +327,10 @@ const likePost = async (req, res = response) => {
 const getLikesPost = async (req, res = response) => {
     const PostToLike = req.params.id;
     var PostFounded=await Post.find({_id: Type.ObjectId(PostToLike)},{likes:1});
-    var LikesTotal= PostFounded.length;
+    var LikesTotal= PostFounded[0].likes.length;
 
     return res.json({
-       of:true,
+       ok:true,
        Likes: LikesTotal
     });
 }
