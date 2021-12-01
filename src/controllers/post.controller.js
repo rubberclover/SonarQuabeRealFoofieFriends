@@ -338,9 +338,9 @@ const getLikesPost = async (req, res = response) => {
 const createComment = async (req, res = response) =>{
 
     let idComment=Type.ObjectId();
-
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const ahora= new Date();
+    var date = ahora.getFullYear()+'-'+(ahora.getMonth()+1)+'-'+ahora.getDate();
+    var time = ahora.getHours() + ":" + ahora.getMinutes() + ":" + ahora.getSeconds();
     var todayDate = date+' '+time;
 
     const { idPost,idUser, text} = req.body;
