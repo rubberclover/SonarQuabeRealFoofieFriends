@@ -327,10 +327,10 @@ const likePost = async (req, res = response) => {
 const getLikesPost = async (req, res = response) => {
     const PostToLike = req.params.id;
     var PostFounded=await Post.find({_id: Type.ObjectId(PostToLike)},{likes:1});
-    var LikesTotal= PostFounded.length;
+    var LikesTotal= PostFounded[0].likes.length;
 
     return res.json({
-       of:true,
+       ok:true,
        Likes: LikesTotal
     });
 }
@@ -338,9 +338,9 @@ const getLikesPost = async (req, res = response) => {
 const createComment = async (req, res = response) =>{
 
     let idComment=Type.ObjectId();
-
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const ahora= new Date();
+    var date = ahora.getFullYear()+'-'+(ahora.getMonth()+1)+'-'+ahora.getDate();
+    var time = ahora.getHours() + ":" + ahora.getMinutes() + ":" + ahora.getSeconds();
     var todayDate = date+' '+time;
 
     const { idPost,idUser, text} = req.body;
