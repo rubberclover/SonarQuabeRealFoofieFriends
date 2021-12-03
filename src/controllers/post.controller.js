@@ -380,7 +380,7 @@ const createComment = async (req, res = response) =>{
 const getLastPosts = async(req, res = response) => {
     
     try{
-    var dbPosts = await Post.find().sort({_id:-1}).limit(5);
+    var dbPosts = await Post.find().sort({_id:-1}).limit(10);
 
     var PostsReturn= dbPosts;
 
