@@ -257,11 +257,6 @@ const getAllPosts = async(req, res = response) => {
     dbPosts.forEach( post => {
         UsuariosEncontrados.push(post.user);
     } ); 
-/*
-    for(let i=0; i< UsuariosEncontrados.length;i++){
-        var UserFound = await User.findById({_id: UsuariosEncontrados[i]}); 
-        PostsReturn[i].user= UserFound;
-    }*/
 
     llamadasEsperar = [];
     for(let i=0; i< UsuariosEncontrados.length;i++){
@@ -390,12 +385,8 @@ const getLastPosts = async(req, res = response) => {
         UsuariosEncontrados.push(post.user);
     } ); 
 
-    llamadasEsperar = [];
     for(let i=0; i< UsuariosEncontrados.length;i++){
-        llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
-    }
-    for(let i=0; i< llamadasEsperar.length;i++){
-        var UserFound = await llamadasEsperar[i];
+        let UserFound = await User.findById({_id: UsuariosEncontrados[i]});
         PostsReturn[i].user= UserFound;
     }
     
