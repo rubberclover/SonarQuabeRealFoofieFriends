@@ -413,7 +413,7 @@ const createComment = async (req, res = response) =>{
 const getLastPosts = async(req, res = response) => {
     
     try{
-    var dbPosts = await Post.find().sort({_id:-1}).limit(5);
+    var dbPosts = await Post.find().sort({_id:-1}).limit(10);
 
     var PostsReturn= dbPosts;
 
@@ -423,12 +423,8 @@ const getLastPosts = async(req, res = response) => {
         UsuariosEncontrados.push(post.user);
     } ); 
 
-    llamadasEsperar = [];
     for(let i=0; i< UsuariosEncontrados.length;i++){
-        llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
-    }
-    for(let i=0; i< llamadasEsperar.length;i++){
-        var UserFound = await llamadasEsperar[i];
+        let UserFound = await User.findById({_id: UsuariosEncontrados[i]});
         PostsReturn[i].user= UserFound;
     }
     

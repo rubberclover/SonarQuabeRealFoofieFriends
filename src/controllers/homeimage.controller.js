@@ -7,7 +7,7 @@ const today= new Date();
 const getAllHomeImage = async (req, res = response) => {
     try {
         // Read BD
-        const dbHomeImage = await HomeImage.find();
+        const dbHomeImage = await HomeImage.findOne();
 
         return res.status(200).json({
             ok: true,
