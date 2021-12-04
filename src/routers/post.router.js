@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { createPost, obtainPost, getAllPosts,obtainChannelPost, obtainChannelPostByTerm, getAllPostTags, likePost, getLikesPost,createComment, getLastPosts,
-    getPostComments} = require('../controllers/post.controller');
+    getPostComments,getBestPosts} = require('../controllers/post.controller');
 const { validateFields } = require('../services/validate-params/validate-fields');
 const router = Router();
 
@@ -23,6 +23,8 @@ router.get('/obtainPost/:id', obtainPost);
 router.get('/getPostComments/:id', getPostComments);
 
 router.get('/getLikesPost/:id', getLikesPost);
+
+router.get('/getBestPosts', getBestPosts);
 
 router.get('/getLastPosts', getLastPosts);
 

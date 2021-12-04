@@ -257,11 +257,44 @@ const getAllPosts = async(req, res = response) => {
     dbPosts.forEach( post => {
         UsuariosEncontrados.push(post.user);
     } ); 
-/*
+
+    llamadasEsperar = [];
     for(let i=0; i< UsuariosEncontrados.length;i++){
-        var UserFound = await User.findById({_id: UsuariosEncontrados[i]}); 
+        llamadasEsperar.push(User.findById({_id: UsuariosEncontrados[i]})); 
+    }
+    for(let i=0; i< llamadasEsperar.length;i++){
+        var UserFound = await llamadasEsperar[i];
         PostsReturn[i].user= UserFound;
-    }*/
+    }
+    
+        return res.json({
+            ok: true,
+            PostsReturn
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
+
+const getBestPosts = async(req, res = response) => {
+    
+    try{
+    var dbPosts = await Post.find().sort({creationDate:-1}).limit(12);
+
+    var PostsReturn= dbPosts;
+
+    PostsReturn.sort((a, b) => parseFloat(b.likes.length) - parseFloat(a.likes.length));
+
+    var UsuariosEncontrados= [];
+
+    PostsReturn.forEach( post => {
+        UsuariosEncontrados.push(post.user);
+    } ); 
 
     llamadasEsperar = [];
     for(let i=0; i< UsuariosEncontrados.length;i++){
@@ -449,5 +482,6 @@ module.exports = {
     getLikesPost,
     createComment,
     getLastPosts,
-    getPostComments
+    getPostComments,
+    getBestPosts
 }
