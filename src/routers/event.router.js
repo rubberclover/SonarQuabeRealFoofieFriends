@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { createEvent,suscribeEvent,getAllEvents,obtainEvent, obtainUserEvent,unsuscribeEvent, getAllEventTags,getAllEventsFilter,getAllEventsFromNow,getAllEventsFilterFromNow} = require('../controllers/event.controller');
+const { createEvent,suscribeEvent,getAllEvents,obtainEvent, obtainUserEvent,unsuscribeEvent, getAllEventTags,getAllEventsFilter,getAllEventsFromNow,getAllEventsFilterFromNow,
+    getAllEventUsers} = require('../controllers/event.controller');
 const { validateFields } = require('../services/validate-params/validate-fields');
 
 const router = Router();
@@ -21,6 +22,8 @@ router.post('/new',
 router.put('/suscribeEvent/:id', suscribeEvent);
 
 router.get('/getAllEvents', getAllEvents);
+
+router.get('/getAllEventUsers/:id', getAllEventUsers);
 
 router.get('/getAllEventsFromNow', getAllEventsFromNow);
 

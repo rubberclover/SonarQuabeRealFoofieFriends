@@ -431,6 +431,35 @@ const getAllEventsFilterFromNow = async(req, res = response) => {
     }
 }*/
 
+const getAllEventUsers = async (req, res = response) => {
+    try {
+        // Read BD
+        const EventsObtained = await Event.find({_id: Type.ObjectId(req.params.id)});
+        var UsersToReturn = [];
+        llamadasEsperar = [];
+        var UsersInEvents = EventsObtained[0].userSuscriber;
+        for(let i =0; i< UsersInEvents.length;i++){
+        llamadasEsperar.push(User.findById({_id: UsersInEvents[i]})); 
+        }
+
+        for(let i=0; i< llamadasEsperar.length;i++){
+            var UserFound = await llamadasEsperar[i];
+            UsersToReturn.push(UserFound);
+        }
+
+        return res.status(200).json({
+            ok: true,
+            UsersToReturn
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the administrator'
+        });
+    }
+}
 
 module.exports = {
     createEvent,
@@ -442,5 +471,6 @@ module.exports = {
     getAllEventTags,
     getAllEventsFilter,
     getAllEventsFromNow,
-    getAllEventsFilterFromNow
+    getAllEventsFilterFromNow,
+    getAllEventUsers
 }
