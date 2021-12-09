@@ -192,7 +192,7 @@ const getAllUsers = async(req, res = response) => {
 const getUserByTerm = async(req, res = response) => {
     try{ 
         
-        var dbUsers = await User.find({},{_id:1,name:1,userImage:1});
+        var dbUsers = await User.find({},{_id:1,username:1,userImage:1});
         var UsersToReturn=[];
         // Read BD
         
@@ -203,7 +203,7 @@ const getUserByTerm = async(req, res = response) => {
             if(dbUsers.length > 0) {
 
                 dbUsers.forEach( user => {
-                    if( user.name.toLowerCase().includes(inputTerm.toLowerCase()) ) {
+                    if( user.username.toLowerCase().includes(inputTerm.toLowerCase()) ) {
                         UsersToReturn.push(user);
                     }
                 } );
