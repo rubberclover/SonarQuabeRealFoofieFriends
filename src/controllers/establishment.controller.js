@@ -7,7 +7,7 @@ const Type = mongoose.Types;
 
 const createEstablishment = async(req, res = response) => {
 
-    const { location, name, timeClose, timeOpen, type, image,geoposition,owner } = req.body;
+    const { location, name, labour, weekend, type, image,geoposition,owner } = req.body;
 
     let idEstablishment=Type.ObjectId();
     // Create establishment with model
@@ -15,8 +15,8 @@ const createEstablishment = async(req, res = response) => {
           _id: idEstablishment,
           location: location,
           name: name,
-          timeClose: timeClose,
-          timeOpen: timeOpen,
+          labour: labour,
+          weekend: weekend,
           type: type,
           image: image,
           owner: owner,

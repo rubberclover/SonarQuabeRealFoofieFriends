@@ -11,11 +11,11 @@ const EstablishmentSchema = new Schema({
         type: String,
         required: true
     },
-    timeClose: {
+    labour: {
         type: String,
         required: true
     },
-    timeOpen: {
+    weekend: {
         type: String,
         required: true
     },
