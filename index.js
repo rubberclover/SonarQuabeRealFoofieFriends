@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const { dbConnection } = require('./src/database/config');
 require('dotenv').config();
 
@@ -11,7 +12,7 @@ dbConnection();
 
 
 // Public directory
-app.use( express.static('public') );
+app.use( express.static('src/public') );
 
 // CORS
 app.use( cors() );
@@ -69,6 +70,10 @@ app.use( '/api/channel', require('./src/routers/channel.router') );
 app.use( '/api/user', require('./src/routers/user.router') );
 app.use( '/api/chat', require('./src/routers/chat.router') );
 app.use( '/api/homeimage', require('./src/routers/homeimage.router') );
+
+app.get( '*', ( req, res ) => {
+    res.sendFile( path.resolve( __dirname, 'src/public/index.html') );
+} )
 
 /*app.listen( process.env.PORT, () => {
     console.log(`Server app in port ${ process.env.PORT }`);
