@@ -22,6 +22,7 @@ const createPost = async(req, res = response) => {
           _id: idPost,
           title: title,
           content: content,
+          channel: channel,
           creationDate: todayDate,
           tagPost: Type.ObjectId(tagPost),
           image: image,
