@@ -14,7 +14,7 @@ const createPost = async(req, res = response) => {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var todayDate = date+' '+time;
 
-    const { title, content, tagPost, image, user, channel } = req.body;
+    const { title, content, tagsPost, images, user, channel } = req.body;
     let idPost=Type.ObjectId();
     
     // Create post with model
@@ -24,12 +24,20 @@ const createPost = async(req, res = response) => {
           content: content,
           channel: channel,
           creationDate: todayDate,
-          tagPost: Type.ObjectId(tagPost),
-          image: image,
+          tagPost: [],
+          image: [],
           user: user,
           likes: [],
           comments:[]
     })
+
+    for(let i = 0;i<images.length;i++){
+        newPost.image.push(images[i]);
+    }
+
+    for(let i = 0;i<tagsPost.length;i++){
+        newPost.tagPost.push(Type.ObjectId(tagsPost[i]));
+    }
 
     try{
         await newPost.save();
