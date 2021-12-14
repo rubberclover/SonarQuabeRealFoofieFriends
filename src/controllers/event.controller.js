@@ -324,8 +324,16 @@ const obtainUserEvent = async(req, res = response) => {
 const getAllEventTags = async (req, res = response) => {
     try {
         // Read BD
-        const dbTagEvent = await TagEvent.find();
-
+        var dbTag = await TagEvent.find().sort({type:1});
+        var dbTagEvent = [];
+        var TagOtro="";
+        for(let i=0; i< dbTag.length; i++){
+            if(dbTag[i].type == "Otro"){
+                TagOtro = dbTag.splice(i,1);
+            }
+        }
+        dbTagEvent= dbTag
+        dbTagEvent.push(TagOtro[0]);
         return res.status(200).json({
             ok: true,
             dbTagEvent
