@@ -14,7 +14,7 @@ const createPost = async(req, res = response) => {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var todayDate = date+' '+time;
 
-    const { title, content, tagsPost, images, user, channel } = req.body;
+    const { title, content, tagPost, image, user, channel } = req.body;
     let idPost=Type.ObjectId();
     
     // Create post with model
@@ -31,12 +31,12 @@ const createPost = async(req, res = response) => {
           comments:[]
     })
 
-    for(let i = 0;i<images.length;i++){
-        newPost.image.push(images[i]);
+    for(let i = 0;i<image.length;i++){
+        newPost.image.push(image[i]);
     }
 
-    for(let i = 0;i<tagsPost.length;i++){
-        newPost.tagPost.push(Type.ObjectId(tagsPost[i]));
+    for(let i = 0;i<tagPost.length;i++){
+        newPost.tagPost.push(Type.ObjectId(tagPost[i]));
     }
 
     try{
